@@ -36,7 +36,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QPushButton" name="pushButton_14">
+        <widget class="QPushButton" name="btPageConnect">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -90,12 +90,43 @@
      </item>
      <item>
       <widget class="QStackedWidget" name="stackMain">
-       <property name="currentIndex">
-        <number>2</number>
-       </property>
-       <widget class="QWidget" name="pageConnect"/>
+       <widget class="QWidget" name="pageConnect">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="ConnectComboBox" name="cbPorts">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>30</pointsize>
+            </font>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btConnect">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Connect</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
        <widget class="QWidget" name="pageNC"/>
        <widget class="QWidget" name="pageJog">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="5,1">
          <item>
           <widget class="QGroupBox" name="groupBox_2">
@@ -120,7 +151,7 @@
                  <number>0</number>
                 </property>
                 <item row="0" column="1">
-                 <widget class="QPushButton" name="pushButton_2">
+                 <widget class="QPushButton" name="btJogYP">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -133,7 +164,7 @@
                  </widget>
                 </item>
                 <item row="0" column="2">
-                 <widget class="QPushButton" name="pushButton_3">
+                 <widget class="QPushButton" name="btJogXPYP">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -146,7 +177,7 @@
                  </widget>
                 </item>
                 <item row="2" column="2">
-                 <widget class="QPushButton" name="pushButton_9">
+                 <widget class="QPushButton" name="btJogXPYN">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -159,7 +190,7 @@
                  </widget>
                 </item>
                 <item row="0" column="0">
-                 <widget class="QPushButton" name="pushButton">
+                 <widget class="QPushButton" name="btJogXNYP">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -205,7 +236,7 @@
                  </layout>
                 </item>
                 <item row="2" column="0">
-                 <widget class="QPushButton" name="pushButton_7">
+                 <widget class="QPushButton" name="btJogXNYN">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -218,7 +249,7 @@
                  </widget>
                 </item>
                 <item row="1" column="2">
-                 <widget class="QPushButton" name="pushButton_6">
+                 <widget class="QPushButton" name="btJogXP">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -231,7 +262,7 @@
                  </widget>
                 </item>
                 <item row="1" column="0">
-                 <widget class="QPushButton" name="pushButton_4">
+                 <widget class="QPushButton" name="btJogXN">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -244,7 +275,7 @@
                  </widget>
                 </item>
                 <item row="2" column="1">
-                 <widget class="QPushButton" name="pushButton_8">
+                 <widget class="QPushButton" name="btJogYN">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -264,7 +295,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="pushButton_15">
+                 <widget class="QPushButton" name="btJogZP">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -290,7 +321,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="pushButton_17">
+                 <widget class="QPushButton" name="btJogZN">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -468,6 +499,16 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ConnectComboBox</class>
+   <extends>QComboBox</extends>
+   <header>custom</header>
+   <slots>
+    <signal>popup()</signal>
+   </slots>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
@@ -477,28 +518,28 @@
    <slot>setFeed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>937</x>
-     <y>541</y>
+     <x>20</x>
+     <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>954</x>
-     <y>592</y>
+     <x>20</x>
+     <y>20</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_14</sender>
+   <sender>btPageConnect</sender>
    <signal>pressed()</signal>
    <receiver>ViewMain</receiver>
    <slot>switchPage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>244</x>
-     <y>47</y>
+     <x>20</x>
+     <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>258</x>
-     <y>4</y>
+     <x>20</x>
+     <y>20</y>
     </hint>
    </hints>
   </connection>
@@ -509,12 +550,12 @@
    <slot>switchPage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>534</x>
-     <y>35</y>
+     <x>20</x>
+     <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>544</x>
-     <y>6</y>
+     <x>20</x>
+     <y>20</y>
     </hint>
    </hints>
   </connection>
@@ -525,12 +566,364 @@
    <slot>switchPage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>824</x>
-     <y>94</y>
+     <x>20</x>
+     <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>847</x>
-     <y>4</y>
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbPorts</sender>
+   <signal>popup()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>fillDevices()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btConnect</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>connectPort()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogXNYP</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogXNYP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogYP</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogYP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogXPYP</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogXPYP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogXN</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogXN()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogXP</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogXP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogXNYN</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogXNYN()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogYN</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogYN()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogXPYN</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogXPYN()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogZP</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogZP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogZN</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogZN()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogXNYP</sender>
+   <signal>released()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogCancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogYP</sender>
+   <signal>released()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogCancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogXPYP</sender>
+   <signal>released()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogCancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogXN</sender>
+   <signal>released()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogCancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogXP</sender>
+   <signal>released()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogCancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogXNYN</sender>
+   <signal>released()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogCancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogYN</sender>
+   <signal>released()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogCancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogXPYN</sender>
+   <signal>released()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogCancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogZP</sender>
+   <signal>released()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogCancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btJogZN</sender>
+   <signal>released()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>jogCancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
     </hint>
    </hints>
   </connection>
@@ -538,5 +931,16 @@
  <slots>
   <slot>setFeed()</slot>
   <slot>switchPage()</slot>
+  <slot>fillDevices()</slot>
+  <slot>connectPort()</slot>
+  <slot>jogXN()</slot>
+  <slot>jogXP()</slot>
+  <slot>jogCancel()</slot>
+  <slot>jogXNYP()</slot>
+  <slot>jogYP()</slot>
+  <slot>jogXPYP()</slot>
+  <slot>jogXNYN()</slot>
+  <slot>jogYN()</slot>
+  <slot>jogXPYN()</slot>
  </slots>
 </ui>
