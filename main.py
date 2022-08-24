@@ -16,72 +16,85 @@ class WinMain(QWidget):
 
 		self.grbl = GrblInterface()
 		self.grbl.connectionChanged.connect(self.grblConnectionChanged)
+		self.grbl.statusUpdate.connect(self.grblStatusUpdate)
+		self.grbl.stateChanged.connect(self.grblStateChanged)
 
-	def grblConnectionChanged(self, c):
+	def grblConnectionChanged(self, c) -> None:
 		if not c:
 			self.viewMain.pageJog.setEnabled(False)
+			self.viewMain.lbConnected.setText("Disconnected")
+			self.viewMain.cbPorts.clear()
 		else:
 			self.viewMain.pageJog.setEnabled(True)
+			self.viewMain.lbConnected.setText("Connected")
 
-	def connectPort(self):
+	def grblStatusUpdate(self, s: GrblStatus) -> None:
+		self.viewMain.btZeroX.setText("%.3f" % (s.x))
+		self.viewMain.btZeroY.setText("%.3f" % (s.y))
+		self.viewMain.btZeroZ.setText("%.3f" % (s.z))
+
+	def grblStateChanged(self, s: str) -> None:
+		self.viewMain.lbState.setText(s)
+
+	def connectPort(self) -> None:
 		self.grbl.connectPort(self.viewMain.cbPorts.currentText())
 
-	def switchPage(self):
+	def switchPage(self) -> None:
 		self.viewMain.stackMain.setCurrentIndex(QObject.sender(self).property("pageIndex"))
 
-	def setFeed(self):
+	def setFeed(self) -> None:
 		self.diagFeed = DiagFeed()
 		result = self.diagFeed.exec()
 		self.viewMain.btFeed.setText(str(result))
 		self.grbl.jogFeed = result
 
-	def jogXNYP(self):
+	def jogXNYP(self) -> None:
 		self.grbl.jogXNYP()
 
-	def jogYP(self):
+	def jogYP(self) -> None:
 		self.grbl.jogYP()
 
-	def jogXPYP(self):
+	def jogXPYP(self) -> None:
 		self.grbl.jogXPYP()
 
-	def jogXN(self):
+	def jogXN(self) -> None:
 		self.grbl.jogXN()
 
-	def jogXP(self):
+	def jogXP(self) -> None:
 		self.grbl.jogXP()
 
-	def jogXNYN(self):
+	def jogXNYN(self) -> None:
 		self.grbl.jogXNYN()
 
-	def jogYN(self):
+	def jogYN(self) -> None:
 		self.grbl.jogYN()
 
-	def jogXPYN(self):
+	def jogXPYN(self) -> None:
 		self.grbl.jogXPYN()
 
-	def jogZP(self):
+	def jogZP(self) -> None:
 		self.grbl.jogZP()
 
-	def jogZN(self):
+	def jogZN(self) -> None:
 		self.grbl.jogZN()
 
-	def jogCancel(self):
+	def jogCancel(self) -> None:
 		self.grbl.jogCancel()
 
-	def fillDevices(self):
+	def fillDevices(self) -> None:
 		self.viewMain.cbPorts.clear()
 		for i in os.listdir("/dev"):
-			if "ttyACM" in i:
+			if "ttyUSB" in i or "ttyACM" in i:
 				self.viewMain.cbPorts.addItem("/dev/" + i)
 
 class DiagFeed(QDialog):
-	def __init__(self):
+	def __init__(self) -> None:
 		super().__init__()
 		self.setWindowFlag(Qt.FramelessWindowHint)
 		self.viewFeed = ViewFeed()
 		self.viewFeed.setupUi(self)
 
-	def returnFeed(self):
+	def returnFeed(self) -> None:
 		feed = int(QObject.sender(self).text())
 		self.done(feed)
 

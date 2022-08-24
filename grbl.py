@@ -5,14 +5,52 @@ import serial as s
 import time
 
 
+class GrblStatus:
+	def __init__(self, report: str):
+		report = report[report.index("|")+6:]
+		self.x: float = float(report[:report.index(",")])
+		report = report[report.index(",")+1:]
+		self.y: float = float(report[:report.index(",")])
+		report = report[report.index(",")+1:]
+		self.z: float = float(report[:report.index(",")])
+
+
 class GrblInterface(QObject):
 	connectionChanged = Signal(bool)
+	statusUpdate = Signal(GrblStatus)
+	stateChanged = Signal(str)
+
 	def __init__(self):
 		super().__init__()
 		self._connected: bool = False
-		self.serial: s.Serial = s.Serial()
+		self.serial = s.Serial()
 
 		self.jogFeed: float = 5000.0
+
+		self.state: str = "Idle"
+
+		self.timerStatus = QTimer()
+		self.timerStatus.setInterval(250)
+		self.timerStatus.timeout.connect(self.getStatus)
+		self.timerStatus.start()
+
+	def getStatus(self) -> None:
+		if self.connected() and self.serial.isOpen():
+			try:
+				self.serial.write(b"?")
+				c = self.serial.read(1)
+				if c != b"<": return
+
+				report = self.serial.read_until(b"\r\n").decode()
+
+				curState = report[0:report.index("|")]
+				if self.state != curState:
+					self._setState(curState)
+
+				self.statusUpdate.emit(GrblStatus(report))
+			except:
+				self.serial.close()
+				self._setConnected(False)
 	
 	def _setConnected(self, c: bool) -> None:
 		self._connected = c
@@ -21,44 +59,67 @@ class GrblInterface(QObject):
 	def connectPort(self, port: str) -> None:
 		self.serial.port = port
 		self.serial.baudrate = 115200
+		self.serial.timeout = 1
 		self.serial.open()
 		self.serial.write(b"\r\n\r\n")
 		time.sleep(2)
-		print(self.serial.read_all().decode())
+		self.serial.flushInput()
 		self._setConnected(True)
 
 	def connected(self) -> bool:
 		return self._connected
 
-	def jogXNYP(self):
+	def _setState(self, s: str) -> None:
+		self.state = s
+		self.stateChanged.emit(s)
+
+	def jogXNYP(self) -> None:
 		self.serial.write(b"$J=F%f G91 X-1000 Y1000\n" % (self.jogFeed))
+		self._waitOK()
 
-	def jogYP(self):
+	def jogYP(self) -> None:
 		self.serial.write(b"$J=F%f G91 Y1000\n" % (self.jogFeed))
+		self._waitOK()
 
-	def jogXPYP(self):
+	def jogXPYP(self) -> None:
 		self.serial.write(b"$J=F%f G91 X1000 Y1000\n" % (self.jogFeed))
+		self._waitOK()
 
-	def jogXN(self):
+	def jogXN(self) -> None:
 		self.serial.write(b"$J=F%f G91 X-1000\n" % (self.jogFeed))
+		self._waitOK()
 
-	def jogXP(self):
+	def jogXP(self) -> None:
 		self.serial.write(b"$J=F%f G91 X1000\n" % (self.jogFeed))
+		self._waitOK()
 
-	def jogXNYN(self):
+	def jogXNYN(self) -> None:
 		self.serial.write(b"$J=F%f G91 X-1000 Y-1000\n" % (self.jogFeed))
+		self._waitOK()
 
-	def jogYN(self):
+	def jogYN(self) -> None:
 		self.serial.write(b"$J=F%f G91 Y-1000\n" % (self.jogFeed))
+		self._waitOK()
 
-	def jogXPYN(self):
+	def jogXPYN(self) -> None:
 		self.serial.write(b"$J=F%f G91 X1000 Y-1000\n" % (self.jogFeed))
+		self._waitOK()
 	
-	def jogZP(self):
+	def jogZP(self) -> None:
 		self.serial.write(b"$J=F%f G91 Z1000\n" % (self.jogFeed))
+		self._waitOK()
 	
-	def jogZN(self):
+	def jogZN(self) -> None:
 		self.serial.write(b"$J=F%f G91 Z-1000\n" % (self.jogFeed))
+		self._waitOK()
 
-	def jogCancel(self):
+	def jogCancel(self) -> None:
 		self.serial.write(b"\x85")
+		self.serial.flush()
+
+	def _waitOK(self) -> None:
+		resp = self.serial.read_until(b"\r\n")
+		# if resp == b"ok\r\n":
+		# 	print("OK")
+		# else:
+		# 	print("NOTOK " + repr(resp))
