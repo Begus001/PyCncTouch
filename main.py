@@ -94,6 +94,15 @@ class WinMain(QWidget):
 	def gotoZeroZ(self) -> None:
 		self.grbl.gotoZeroZ()
 
+	def zeroWorkX(self) -> None:
+		self.grbl.zeroWorkX()
+
+	def zeroWorkY(self) -> None:
+		self.grbl.zeroWorkY()
+
+	def zeroWorkZ(self) -> None:
+		self.grbl.zeroWorkZ()
+
 	def fillDevices(self) -> None:
 		self.viewMain.cbPorts.clear()
 		for i in os.listdir("/dev"):

@@ -361,6 +361,9 @@ class ViewMain(object):
         self.btGotoZeroX.pressed.connect(ViewMain.gotoZeroX)
         self.btGotoZeroY.pressed.connect(ViewMain.gotoZeroY)
         self.btGotoZeroZ.pressed.connect(ViewMain.gotoZeroZ)
+        self.btZeroX.pressed.connect(ViewMain.zeroWorkX)
+        self.btZeroY.pressed.connect(ViewMain.zeroWorkY)
+        self.btZeroZ.pressed.connect(ViewMain.zeroWorkZ)
 
         QMetaObject.connectSlotsByName(ViewMain)
     # setupUi

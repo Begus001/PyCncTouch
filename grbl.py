@@ -12,7 +12,7 @@ class GrblStatus:
 		report = report[report.index(",")+1:]
 		self.y: float = float(report[:report.index(",")])
 		report = report[report.index(",")+1:]
-		self.z: float = float(report[:report.index(",")])
+		self.z: float = float(report[:report.index("|")])
 
 
 class GrblInterface(QObject):
@@ -74,64 +74,65 @@ class GrblInterface(QObject):
 		self.stateChanged.emit(s)
 
 	def jogXNYP(self) -> None:
-		self.serial.write(b"$J=F%f G91 X-1000 Y1000\n" % (self.jogFeed))
-		self._waitOK()
+		self._sendCmd(b"$J=F%f G91 X-1000 Y1000\n" % (self.jogFeed))
 
 	def jogYP(self) -> None:
-		self.serial.write(b"$J=F%f G91 Y1000\n" % (self.jogFeed))
-		self._waitOK()
+		self._sendCmd(b"$J=F%f G91 Y1000\n" % (self.jogFeed))
 
 	def jogXPYP(self) -> None:
-		self.serial.write(b"$J=F%f G91 X1000 Y1000\n" % (self.jogFeed))
-		self._waitOK()
+		self._sendCmd(b"$J=F%f G91 X1000 Y1000\n" % (self.jogFeed))
 
 	def jogXN(self) -> None:
-		self.serial.write(b"$J=F%f G91 X-1000\n" % (self.jogFeed))
-		self._waitOK()
+		self._sendCmd(b"$J=F%f G91 X-1000\n" % (self.jogFeed))
 
 	def jogXP(self) -> None:
-		self.serial.write(b"$J=F%f G91 X1000\n" % (self.jogFeed))
-		self._waitOK()
+		self._sendCmd(b"$J=F%f G91 X1000\n" % (self.jogFeed))
 
 	def jogXNYN(self) -> None:
-		self.serial.write(b"$J=F%f G91 X-1000 Y-1000\n" % (self.jogFeed))
-		self._waitOK()
+		self._sendCmd(b"$J=F%f G91 X-1000 Y-1000\n" % (self.jogFeed))
 
 	def jogYN(self) -> None:
-		self.serial.write(b"$J=F%f G91 Y-1000\n" % (self.jogFeed))
-		self._waitOK()
+		self._sendCmd(b"$J=F%f G91 Y-1000\n" % (self.jogFeed))
 
 	def jogXPYN(self) -> None:
-		self.serial.write(b"$J=F%f G91 X1000 Y-1000\n" % (self.jogFeed))
-		self._waitOK()
+		self._sendCmd(b"$J=F%f G91 X1000 Y-1000\n" % (self.jogFeed))
 	
 	def jogZP(self) -> None:
-		self.serial.write(b"$J=F%f G91 Z1000\n" % (self.jogFeed))
-		self._waitOK()
+		self._sendCmd(b"$J=F%f G91 Z1000\n" % (self.jogFeed))
 	
 	def jogZN(self) -> None:
-		self.serial.write(b"$J=F%f G91 Z-1000\n" % (self.jogFeed))
-		self._waitOK()
+		self._sendCmd(b"$J=F%f G91 Z-1000\n" % (self.jogFeed))
 
 	def jogCancel(self) -> None:
 		self.serial.write(b"\x85")
 		self.serial.flush()
 
 	def gotoZeroX(self) -> None:
-		self.serial.write(b"G0 X0\n")
-		self._waitOK()
+		self._sendCmd(b"G0 X0\n")
 
 	def gotoZeroY(self) -> None:
-		self.serial.write(b"G0 Y0\n")
-		self._waitOK()
+		self._sendCmd(b"G0 Y0\n")
 
 	def gotoZeroZ(self) -> None:
-		self.serial.write(b"G0 Z0\n")
+		self._sendCmd(b"G0 Z0\n")
+
+	def zeroWorkX(self) -> None:
+		self._sendCmd(b"G10 L20 P0 X0\n")
+
+	def zeroWorkY(self) -> None:
+		self._sendCmd(b"G10 L20 P0 Y0\n")
+
+	def zeroWorkZ(self) -> None:
+		self._sendCmd(b"G10 L20 P0 Z0\n")
+
+	def _sendCmd(self, cmd: bytes) -> None:
+		self.serial.read_all()
+		self.serial.write(cmd)
 		self._waitOK()
 
-	def _waitOK(self) -> None:
+	def _waitOK(self) -> bool:
 		resp = self.serial.read_until(b"\r\n")
-		# if resp == b"ok\r\n":
-		# 	print("OK")
-		# else:
-		# 	print("NOTOK " + repr(resp))
+		if resp != b"ok\r\n":
+			print("RESP: " + repr(resp))
+			return False
+		return True

@@ -969,6 +969,24 @@
     <receiver>ViewMain</receiver>
     <slot>gotoZeroZ()</slot>
   </connection>
+  <connection>
+    <sender>btZeroX</sender>
+    <signal>pressed()</signal>
+    <receiver>ViewMain</receiver>
+    <slot>zeroWorkX()</slot>
+  </connection>
+  <connection>
+    <sender>btZeroY</sender>
+    <signal>pressed()</signal>
+    <receiver>ViewMain</receiver>
+    <slot>zeroWorkY()</slot>
+  </connection>
+  <connection>
+    <sender>btZeroZ</sender>
+    <signal>pressed()</signal>
+    <receiver>ViewMain</receiver>
+    <slot>zeroWorkZ()</slot>
+  </connection>
  </connections>
  <slots>
   <slot>setFeed()</slot>
@@ -987,5 +1005,8 @@
   <slot>gotoZeroX()</slot>
   <slot>gotoZeroY()</slot>
   <slot>gotoZeroZ()</slot>
+  <slot>zeroWorkX()</slot>
+  <slot>zeroWorkY()</slot>
+  <slot>zeroWorkZ()</slot>
  </slots>
 </ui>
