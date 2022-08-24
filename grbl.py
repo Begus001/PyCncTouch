@@ -13,6 +13,8 @@ class GrblStatus:
 		self.y: float = float(report[:report.index(",")])
 		report = report[report.index(",")+1:]
 		self.z: float = float(report[:report.index("|")])
+		report = report[report.index("|")+4:]
+		self.currentFeed: float = float(report[:report.index(",")])
 
 
 class GrblInterface(QObject):
@@ -26,6 +28,7 @@ class GrblInterface(QObject):
 		self.serial = s.Serial()
 
 		self.jogFeed: float = defaultFeed
+		self.currentFeed: float = 0.0
 
 		self.state: str = "Idle"
 

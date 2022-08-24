@@ -314,9 +314,20 @@ class ViewMain(object):
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.lbConnected = QLabel(ViewMain)
         self.lbConnected.setObjectName(u"lbConnected")
-        self.lbConnected.setAlignment(Qt.AlignCenter)
+        self.lbConnected.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
         self.horizontalLayout_8.addWidget(self.lbConnected)
+
+        self.label_5 = QLabel(ViewMain)
+        self.label_5.setObjectName(u"label_5")
+        self.label_5.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_8.addWidget(self.label_5)
+
+        self.lbCurrentFeed = QLabel(ViewMain)
+        self.lbCurrentFeed.setObjectName(u"lbCurrentFeed")
+
+        self.horizontalLayout_8.addWidget(self.lbCurrentFeed)
 
         self.lbState = QLabel(ViewMain)
         self.lbState.setObjectName(u"lbState")
@@ -399,6 +410,8 @@ class ViewMain(object):
         self.label_4.setText(QCoreApplication.translate("ViewMain", u"Feed", None))
         self.btFeed.setText(QCoreApplication.translate("ViewMain", u"5000", None))
         self.lbConnected.setText(QCoreApplication.translate("ViewMain", u"Disconnected", None))
+        self.label_5.setText(QCoreApplication.translate("ViewMain", u"Current Feed:", None))
+        self.lbCurrentFeed.setText(QCoreApplication.translate("ViewMain", u"0", None))
         self.lbState.setText(QCoreApplication.translate("ViewMain", u"Idle", None))
     # retranslateUi
 

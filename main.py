@@ -36,6 +36,7 @@ class WinMain(QWidget):
 		self.viewMain.btZeroX.setText("%.3f" % (s.x))
 		self.viewMain.btZeroY.setText("%.3f" % (s.y))
 		self.viewMain.btZeroZ.setText("%.3f" % (s.z))
+		self.viewMain.lbCurrentFeed.setText("%.0f" % (s.currentFeed))
 
 	def grblStateChanged(self, s: str) -> None:
 		self.viewMain.lbState.setText(s)

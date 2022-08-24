@@ -503,7 +503,24 @@
           <string>Disconnected</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Current Feed:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbCurrentFeed">
+         <property name="text">
+          <string>0</string>
          </property>
         </widget>
        </item>
@@ -952,40 +969,100 @@
    </hints>
   </connection>
   <connection>
-    <sender>btGotoZeroX</sender>
-    <signal>pressed()</signal>
-    <receiver>ViewMain</receiver>
-    <slot>gotoZeroX()</slot>
+   <sender>btGotoZeroX</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>gotoZeroX()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
-    <sender>btGotoZeroY</sender>
-    <signal>pressed()</signal>
-    <receiver>ViewMain</receiver>
-    <slot>gotoZeroY()</slot>
+   <sender>btGotoZeroY</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>gotoZeroY()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
-    <sender>btGotoZeroZ</sender>
-    <signal>pressed()</signal>
-    <receiver>ViewMain</receiver>
-    <slot>gotoZeroZ()</slot>
+   <sender>btGotoZeroZ</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>gotoZeroZ()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
-    <sender>btZeroX</sender>
-    <signal>pressed()</signal>
-    <receiver>ViewMain</receiver>
-    <slot>zeroWorkX()</slot>
+   <sender>btZeroX</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>zeroWorkX()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
-    <sender>btZeroY</sender>
-    <signal>pressed()</signal>
-    <receiver>ViewMain</receiver>
-    <slot>zeroWorkY()</slot>
+   <sender>btZeroY</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>zeroWorkY()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
-    <sender>btZeroZ</sender>
-    <signal>pressed()</signal>
-    <receiver>ViewMain</receiver>
-    <slot>zeroWorkZ()</slot>
+   <sender>btZeroZ</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>zeroWorkZ()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
  </connections>
  <slots>
