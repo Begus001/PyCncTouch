@@ -7,6 +7,10 @@ from views.views import *
 from grbl import *
 
 
+GRBL_UPDATE_INTERVAL_MS = 100
+DEFAULT_FEED = 5000.0
+
+
 class WinMain(QWidget):
 	def __init__(self):
 		super().__init__()
@@ -14,12 +18,12 @@ class WinMain(QWidget):
 		self.viewMain = ViewMain()
 		self.viewMain.setupUi(self)
 
-		self.grbl = GrblInterface()
+		self.grbl = GrblInterface(DEFAULT_FEED, GRBL_UPDATE_INTERVAL_MS)
 		self.grbl.connectionChanged.connect(self.grblConnectionChanged)
 		self.grbl.statusUpdate.connect(self.grblStatusUpdate)
 		self.grbl.stateChanged.connect(self.grblStateChanged)
 
-	def grblConnectionChanged(self, c) -> None:
+	def grblConnectionChanged(self, c: bool) -> None:
 		if not c:
 			self.viewMain.pageJog.setEnabled(False)
 			self.viewMain.lbConnected.setText("Disconnected")
@@ -80,6 +84,15 @@ class WinMain(QWidget):
 
 	def jogCancel(self) -> None:
 		self.grbl.jogCancel()
+
+	def gotoZeroX(self) -> None:
+		self.grbl.gotoZeroX()
+
+	def gotoZeroY(self) -> None:
+		self.grbl.gotoZeroY()
+
+	def gotoZeroZ(self) -> None:
+		self.grbl.gotoZeroZ()
 
 	def fillDevices(self) -> None:
 		self.viewMain.cbPorts.clear()

@@ -156,7 +156,7 @@
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QPushButton" name="pushButton_18">
+                   <widget class="QPushButton" name="btGotoZeroX">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                       <horstretch>0</horstretch>
@@ -169,7 +169,7 @@
                    </widget>
                   </item>
                   <item>
-                   <widget class="QPushButton" name="pushButton_5">
+                   <widget class="QPushButton" name="btGotoZeroY">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                       <horstretch>0</horstretch>
@@ -308,7 +308,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="pushButton_16">
+                 <widget class="QPushButton" name="btGotoZeroZ">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -951,6 +951,24 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+    <sender>btGotoZeroX</sender>
+    <signal>pressed()</signal>
+    <receiver>ViewMain</receiver>
+    <slot>gotoZeroX()</slot>
+  </connection>
+  <connection>
+    <sender>btGotoZeroY</sender>
+    <signal>pressed()</signal>
+    <receiver>ViewMain</receiver>
+    <slot>gotoZeroY()</slot>
+  </connection>
+  <connection>
+    <sender>btGotoZeroZ</sender>
+    <signal>pressed()</signal>
+    <receiver>ViewMain</receiver>
+    <slot>gotoZeroZ()</slot>
+  </connection>
  </connections>
  <slots>
   <slot>setFeed()</slot>
@@ -966,5 +984,8 @@
   <slot>jogXNYN()</slot>
   <slot>jogYN()</slot>
   <slot>jogXPYN()</slot>
+  <slot>gotoZeroX()</slot>
+  <slot>gotoZeroY()</slot>
+  <slot>gotoZeroZ()</slot>
  </slots>
 </ui>

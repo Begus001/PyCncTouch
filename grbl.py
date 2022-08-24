@@ -20,17 +20,17 @@ class GrblInterface(QObject):
 	statusUpdate = Signal(GrblStatus)
 	stateChanged = Signal(str)
 
-	def __init__(self):
+	def __init__(self, defaultFeed: float, statusInterval: int):
 		super().__init__()
 		self._connected: bool = False
 		self.serial = s.Serial()
 
-		self.jogFeed: float = 5000.0
+		self.jogFeed: float = defaultFeed
 
 		self.state: str = "Idle"
 
 		self.timerStatus = QTimer()
-		self.timerStatus.setInterval(250)
+		self.timerStatus.setInterval(statusInterval)
 		self.timerStatus.timeout.connect(self.getStatus)
 		self.timerStatus.start()
 
@@ -116,6 +116,18 @@ class GrblInterface(QObject):
 	def jogCancel(self) -> None:
 		self.serial.write(b"\x85")
 		self.serial.flush()
+
+	def gotoZeroX(self) -> None:
+		self.serial.write(b"G0 X0\n")
+		self._waitOK()
+
+	def gotoZeroY(self) -> None:
+		self.serial.write(b"G0 Y0\n")
+		self._waitOK()
+
+	def gotoZeroZ(self) -> None:
+		self.serial.write(b"G0 Z0\n")
+		self._waitOK()
 
 	def _waitOK(self) -> None:
 		resp = self.serial.read_until(b"\r\n")
