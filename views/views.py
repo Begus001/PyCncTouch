@@ -85,6 +85,12 @@ class ViewMain(object):
         self.stackMain.addWidget(self.pageConnect)
         self.pageNC = QWidget()
         self.pageNC.setObjectName(u"pageNC")
+        self.btOpen = QPushButton(self.pageNC)
+        self.btOpen.setObjectName(u"btOpen")
+        self.btOpen.setGeometry(QRect(70, 40, 201, 71))
+        self.btStart = QPushButton(self.pageNC)
+        self.btStart.setObjectName(u"btStart")
+        self.btStart.setGeometry(QRect(130, 230, 241, 121))
         self.stackMain.addWidget(self.pageNC)
         self.pageJog = QWidget()
         self.pageJog.setObjectName(u"pageJog")
@@ -375,6 +381,7 @@ class ViewMain(object):
         self.btZeroX.pressed.connect(ViewMain.zeroWorkX)
         self.btZeroY.pressed.connect(ViewMain.zeroWorkY)
         self.btZeroZ.pressed.connect(ViewMain.zeroWorkZ)
+        self.btOpen.pressed.connect(ViewMain.openNC)
 
         QMetaObject.connectSlotsByName(ViewMain)
     # setupUi
@@ -386,6 +393,8 @@ class ViewMain(object):
         self.btPageNC.setText(QCoreApplication.translate("ViewMain", u"NC", None))
         self.btPageJog.setText(QCoreApplication.translate("ViewMain", u"Jog", None))
         self.btConnect.setText(QCoreApplication.translate("ViewMain", u"Connect", None))
+        self.btOpen.setText(QCoreApplication.translate("ViewMain", u"Open", None))
+        self.btStart.setText(QCoreApplication.translate("ViewMain", u"Start", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("ViewMain", u"Jog", None))
         self.btGotoZeroX.setText(QCoreApplication.translate("ViewMain", u"X0", None))
         self.btGotoZeroY.setText(QCoreApplication.translate("ViewMain", u"Y0", None))
@@ -615,5 +624,53 @@ class ViewFeed(object):
         self.bt14.setText(QCoreApplication.translate("ViewFeed", u"4000", None))
         self.bt15.setText(QCoreApplication.translate("ViewFeed", u"4500", None))
         self.bt16.setText(QCoreApplication.translate("ViewFeed", u"5000", None))
+    # retranslateUi
+
+# -*- coding: utf-8 -*-
+
+################################################################################
+## Form generated from reading UI file 'viewOpen.ui'
+##
+## Created by: Qt User Interface Compiler version 6.3.1
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QDialog, QListWidget, QListWidgetItem,
+    QPushButton, QSizePolicy, QWidget)
+
+class ViewOpen(object):
+    def setupUi(self, ViewOpen):
+        if not ViewOpen.objectName():
+            ViewOpen.setObjectName(u"ViewOpen")
+        ViewOpen.resize(1024, 600)
+        self.listFiles = QListWidget(ViewOpen)
+        self.listFiles.setObjectName(u"listFiles")
+        self.listFiles.setGeometry(QRect(10, 10, 871, 561))
+        self.btOpen = QPushButton(ViewOpen)
+        self.btOpen.setObjectName(u"btOpen")
+        self.btOpen.setGeometry(QRect(910, 40, 101, 61))
+        self.btCancel = QPushButton(ViewOpen)
+        self.btCancel.setObjectName(u"btCancel")
+        self.btCancel.setGeometry(QRect(910, 120, 101, 71))
+
+        self.retranslateUi(ViewOpen)
+        self.btOpen.pressed.connect(ViewOpen.returnFile)
+        self.btCancel.pressed.connect(ViewOpen.cancel)
+
+        QMetaObject.connectSlotsByName(ViewOpen)
+    # setupUi
+
+    def retranslateUi(self, ViewOpen):
+        ViewOpen.setWindowTitle(QCoreApplication.translate("ViewOpen", u"Dialog", None))
+        self.btOpen.setText(QCoreApplication.translate("ViewOpen", u"Open", None))
+        self.btCancel.setText(QCoreApplication.translate("ViewOpen", u"Cancel", None))
     # retranslateUi
 

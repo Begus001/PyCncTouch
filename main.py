@@ -9,6 +9,7 @@ from grbl import *
 
 GRBL_UPDATE_INTERVAL_MS = 100
 DEFAULT_FEED = 5000.0
+NC_DIR = "/home/main/sync/cnc"
 
 
 class WinMain(QWidget):
@@ -110,6 +111,15 @@ class WinMain(QWidget):
 			if "ttyUSB" in i or "ttyACM" in i:
 				self.viewMain.cbPorts.addItem("/dev/" + i)
 
+	def openNC(self):
+		self.diagOpen = DiagOpen()
+		ret = self.diagOpen.exec()
+		if ret:
+			self.grbl.startNC(os.path.join(NC_DIR, self.diagOpen.selectedFile))
+		else:
+			print("cancel")
+
+
 class DiagFeed(QDialog):
 	def __init__(self) -> None:
 		super().__init__()
@@ -122,14 +132,40 @@ class DiagFeed(QDialog):
 		self.done(feed)
 
 
+class DiagOpen(QDialog):
+	def __init__(self) -> None:
+		super().__init__()
+		self.setWindowFlag(Qt.FramelessWindowHint)
+		self.viewOpen = ViewOpen()
+		self.viewOpen.setupUi(self)
+		self.selectedFile: str
+
+		for name in os.listdir(NC_DIR):
+			if os.path.isdir(os.path.join(NC_DIR, name)):
+				item = QListWidgetItem(QIcon.fromTheme("folder"), name)
+			else:
+				item = QListWidgetItem(QIcon.fromTheme("document"), name)
+			item.setSizeHint(QSize(0, 60))
+			item.setFont(QFont(self.font().family(), 20))
+			self.viewOpen.listFiles.addItem(item)
+
+	def returnFile(self) -> None:
+		self.selectedFile = os.path.join(NC_DIR, self.viewOpen.listFiles.selectedItems()[0].text())
+		self.done(1)
+
+	def cancel(self) -> None:
+		self.done(0)
+
+
 app = QApplication()
 m = WinMain()
 
-for screen in app.screens():
-	if screen.geometry().width() == 1024:
-		m.move(screen.geometry().x(), screen.geometry().y())
+# for screen in app.screens():
+# 	if screen.geometry().width() == 1024:
+# 		m.move(screen.geometry().x(), screen.geometry().y())
 
 m.show()
 import signal
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 app.exec()
+m.grbl.shouldClose = True
