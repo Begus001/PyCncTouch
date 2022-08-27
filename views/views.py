@@ -90,7 +90,10 @@ class ViewMain(object):
         self.btOpen.setGeometry(QRect(70, 40, 201, 71))
         self.btStart = QPushButton(self.pageNC)
         self.btStart.setObjectName(u"btStart")
-        self.btStart.setGeometry(QRect(130, 230, 241, 121))
+        self.btStart.setGeometry(QRect(50, 140, 241, 121))
+        self.btUnlock = QPushButton(self.pageNC)
+        self.btUnlock.setObjectName(u"btUnlock")
+        self.btUnlock.setGeometry(QRect(80, 320, 201, 81))
         self.stackMain.addWidget(self.pageNC)
         self.pageJog = QWidget()
         self.pageJog.setObjectName(u"pageJog")
@@ -382,6 +385,8 @@ class ViewMain(object):
         self.btZeroY.pressed.connect(ViewMain.zeroWorkY)
         self.btZeroZ.pressed.connect(ViewMain.zeroWorkZ)
         self.btOpen.pressed.connect(ViewMain.openNC)
+        self.btStart.pressed.connect(ViewMain.startNC)
+        self.btUnlock.pressed.connect(ViewMain.unlock)
 
         QMetaObject.connectSlotsByName(ViewMain)
     # setupUi
@@ -395,6 +400,7 @@ class ViewMain(object):
         self.btConnect.setText(QCoreApplication.translate("ViewMain", u"Connect", None))
         self.btOpen.setText(QCoreApplication.translate("ViewMain", u"Open", None))
         self.btStart.setText(QCoreApplication.translate("ViewMain", u"Start", None))
+        self.btUnlock.setText(QCoreApplication.translate("ViewMain", u"Unlock", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("ViewMain", u"Jog", None))
         self.btGotoZeroX.setText(QCoreApplication.translate("ViewMain", u"X0", None))
         self.btGotoZeroY.setText(QCoreApplication.translate("ViewMain", u"Y0", None))

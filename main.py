@@ -27,10 +27,14 @@ class WinMain(QWidget):
 	def grblConnectionChanged(self, c: bool) -> None:
 		if not c:
 			self.viewMain.pageJog.setEnabled(False)
+			self.viewMain.pageNC.setEnabled(False)
+			self.viewMain.pageConnect.setEnabled(True)
 			self.viewMain.lbConnected.setText("Disconnected")
 			self.viewMain.cbPorts.clear()
 		else:
 			self.viewMain.pageJog.setEnabled(True)
+			self.viewMain.pageNC.setEnabled(True)
+			self.viewMain.pageConnect.setEnabled(False)
 			self.viewMain.lbConnected.setText("Connected")
 
 	def grblStatusUpdate(self, s: GrblStatus) -> None:
@@ -115,9 +119,15 @@ class WinMain(QWidget):
 		self.diagOpen = DiagOpen()
 		ret = self.diagOpen.exec()
 		if ret:
-			self.grbl.startNC(os.path.join(NC_DIR, self.diagOpen.selectedFile))
+			self.grbl.filepath = os.path.join(NC_DIR, self.diagOpen.selectedFile)
 		else:
 			print("cancel")
+
+	def startNC(self):
+		self.grbl.stream = True
+
+	def unlock(self):
+		self.grbl.unlock()
 
 
 class DiagFeed(QDialog):

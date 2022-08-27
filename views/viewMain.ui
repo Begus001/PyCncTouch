@@ -139,14 +139,27 @@
         <widget class="QPushButton" name="btStart">
          <property name="geometry">
           <rect>
-           <x>130</x>
-           <y>230</y>
+           <x>50</x>
+           <y>140</y>
            <width>241</width>
            <height>121</height>
           </rect>
          </property>
          <property name="text">
           <string>Start</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btUnlock">
+         <property name="geometry">
+          <rect>
+           <x>80</x>
+           <y>320</y>
+           <width>201</width>
+           <height>81</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Unlock</string>
          </property>
         </widget>
        </widget>
@@ -1107,6 +1120,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>btStart</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>startNC()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>184</x>
+     <y>321</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>256</x>
+     <y>594</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btUnlock</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>unlock()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>238</x>
+     <y>469</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>369</x>
+     <y>599</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>setFeed()</slot>
@@ -1129,5 +1174,7 @@
   <slot>zeroWorkY()</slot>
   <slot>zeroWorkZ()</slot>
   <slot>openNC()</slot>
+  <slot>startNC()</slot>
+  <slot>unlock()</slot>
  </slots>
 </ui>
