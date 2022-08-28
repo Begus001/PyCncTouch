@@ -23,6 +23,30 @@ class WinMain(QWidget):
 		self.grbl.connectionChanged.connect(self.grblConnectionChanged)
 		self.grbl.statusUpdate.connect(self.grblStatusUpdate)
 		self.grbl.stateChanged.connect(self.grblStateChanged)
+		self.grbl.processedIndexChanged.connect(self.selectGcodeLine)
+		self.grbl.streamStatusChanged.connect(self.grblStreamStatusChanged)
+
+		self.destroyed.connect(self.closeGrblThreads)
+
+	def closeGrblThreads(self):
+		self.grbl.shouldClose = True
+
+	def selectGcodeLine(self, i) -> None:
+		self.viewMain.listGcode.setCurrentRow(i)
+
+	def grblStreamStatusChanged(self, stream: bool) -> None:
+		if stream:
+			self.viewMain.pageJog.setEnabled(False)
+			self.viewMain.btStart.setEnabled(False)
+			self.viewMain.btOpen.setEnabled(False)
+			self.viewMain.btUnlock.setEnabled(False)
+		else:
+			self.viewMain.pageJog.setEnabled(True)
+			self.viewMain.btStart.setEnabled(True)
+			self.viewMain.btOpen.setEnabled(True)
+			self.viewMain.btUnlock.setEnabled(True)
+			self.viewMain.listGcode.setCurrentRow(0)
+			self.viewMain.listGcode.setCurrentRow(-1)
 
 	def grblConnectionChanged(self, c: bool) -> None:
 		if not c:
@@ -41,10 +65,21 @@ class WinMain(QWidget):
 		self.viewMain.btZeroX.setText("%.3f" % (s.x))
 		self.viewMain.btZeroY.setText("%.3f" % (s.y))
 		self.viewMain.btZeroZ.setText("%.3f" % (s.z))
-		self.viewMain.lbCurrentFeed.setText("%.0f" % (s.currentFeed))
+		self.viewMain.lbX.setText("X%.3f" % (s.x))
+		self.viewMain.lbY.setText("Y%.3f" % (s.y))
+		self.viewMain.lbZ.setText("Z%.3f" % (s.z))
+		self.viewMain.lbF.setText("F%.1f" % (s.currentFeed))
+		self.viewMain.lbS.setText("S%.0f" % (s.currentSpeed))
 
 	def grblStateChanged(self, s: str) -> None:
 		self.viewMain.lbState.setText(s)
+		if "Alarm" in s:
+			self.viewMain.pageJog.setEnabled(False)
+			self.viewMain.btStart.setEnabled(False)
+		else:
+			self.viewMain.pageJog.setEnabled(True)
+			if not self.grbl.stream:
+				self.viewMain.btStart.setEnabled(True)
 
 	def connectPort(self) -> None:
 		self.grbl.connectPort(self.viewMain.cbPorts.currentText())
@@ -119,12 +154,18 @@ class WinMain(QWidget):
 		self.diagOpen = DiagOpen()
 		ret = self.diagOpen.exec()
 		if ret:
-			self.grbl.filepath = os.path.join(NC_DIR, self.diagOpen.selectedFile)
-		else:
-			print("cancel")
+			with open(self.diagOpen.selectedFile, "r") as f:
+				gcode = ""
+				for line in f:
+					l = re.sub("\s|\(.*?\)", "", line)
+					if l != "":
+						gcode += l + "\n"
+				self.grbl.loadNC(gcode)
+				self.viewMain.listGcode.clear()
+				self.viewMain.listGcode.addItems(gcode.splitlines())
 
 	def startNC(self):
-		self.grbl.stream = True
+		self.grbl.startNC()
 
 	def unlock(self):
 		self.grbl.unlock()

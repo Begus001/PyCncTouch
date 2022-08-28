@@ -18,12 +18,19 @@ class GrblStatus:
 		self.z: float = float(report[:report.index("|")])
 		report = report[report.index("|")+4:]
 		self.currentFeed: float = float(report[:report.index(",")])
+		report = report[report.index(",")+1:]
+		try:
+			self.currentSpeed: float = float(report[:report.index("|")])
+		except ValueError:
+			self.currentSpeed: float = float(report[:report.index(">")])
 
 
 class GrblInterface(QObject):
 	connectionChanged = Signal(bool)
 	statusUpdate = Signal(GrblStatus)
 	stateChanged = Signal(str)
+	processedIndexChanged = Signal(int)
+	streamStatusChanged = Signal(bool)
 
 	def __init__(self, defaultFeed: float, statusInterval: int):
 		super().__init__()
@@ -32,7 +39,7 @@ class GrblInterface(QObject):
 
 		self.shouldClose: bool = False
 		self.stream: bool = False
-		self.filepath: str = ""
+		self.gcode: str = ""
 
 		self.jogFeed: float = defaultFeed
 		self.currentFeed: float = 0.0
@@ -71,55 +78,48 @@ class GrblInterface(QObject):
 							self.stateChanged.emit(self.state)
 							self.statusUpdate.emit(GrblStatus(resp))
 				else:
-					f = open(self.filepath, "r")
+					self.processedIndexChanged.emit(0)
 					lineIndex = 0
 					processedIndex = 0
 
-					for line in f:
+					for line in self.gcode.splitlines():
+						line = line + "\n"
 						lineIndex += 1
-						l = re.sub("\s|\(.*?\)", "", line) + "\n"
-						self.bytesInBuf.append(len(l))
+						self.bytesInBuf.append(len(line))
 
-						while sum(self.bytesInBuf) > 127 or self.serial.inWaiting() and self.stream and self.connected:
-							if "Alarm" in self.state or not self.connected or not self.serial.isOpen():
-								self.stream = False
+						while sum(self.bytesInBuf) > 127 or self.serial.inWaiting():
+							if not self.checkAlarmAndConnected():
+								self.stopStream()
 								break
-							
-							if self.connected and self.serial.isOpen() and self.stream:
-								resp = self.serial.readline().decode().strip()
-							else: break
+
+							resp = self.serial.readline().decode().strip()
 
 							if "ok" in resp or "error" in resp:
 								processedIndex += 1
+								self.processedIndexChanged.emit(processedIndex)
 								del self.bytesInBuf[0]
 							elif "<" in resp:
 								self.keepAlive = True
 								self.state = resp[1:resp.index("|")]
 								self.stateChanged.emit(self.state)
 								self.statusUpdate.emit(GrblStatus(resp))
+						
+						if not self.checkAlarmAndConnected():
+							self.stopStream()
+							break
 
-							if "Alarm" in self.state or not self.connected or not self.serial.isOpen():
-								self.stream = False
-								break
-
-						if "Alarm" in self.state or not self.connected or not self.serial.isOpen():
-								self.stream = False
-								break
-
-						print(l.strip())
-						if self.connected and self.stream and self.serial.isOpen():
-							self.serial.write(bytes(l, "utf-8"))
-						else:
-							self.stream = False
+						self.serial.write(bytes(line, "utf-8"))
 					
-					while processedIndex < lineIndex and self.stream and self.connected and self.serial.isOpen():
-						while not self.serial.inWaiting():
-							if not self.connected:
-								self.stream = False
-						if not self.stream: break
+					while processedIndex < lineIndex and self.stream:
+
+						if not self.checkAlarmAndConnected():
+							self.stopStream()
+							break
+
 						resp = self.serial.readline().decode().strip()
 						if "ok" in resp or "error" in resp:
 								processedIndex += 1
+								self.processedIndexChanged.emit(processedIndex)
 								del self.bytesInBuf[0]
 						elif "<" in resp:
 							self.keepAlive = True
@@ -127,31 +127,32 @@ class GrblInterface(QObject):
 							self.stateChanged.emit(self.state)
 							self.statusUpdate.emit(GrblStatus(resp))
 					
-					self.stream = False
-					self.bytesInBuf.clear()
-					if self.serial.isOpen():
-						self.serial.read_all()
-
-					f.close()
+					self.stopStream()
 						
 
 				time.sleep(0.001)
 			else:
 				time.sleep(0.5)
 
+	def checkAlarmAndConnected(self) -> bool:
+		if "Alarm" not in self.state and self.connected and self.stream and self.serial.isOpen() and not self.shouldClose: return True
+		else: return False
+
+	def stopStream(self) -> None:
+		self.setStream(False)
+		self.serial.reset_input_buffer()
+		self.bytesInBuf.clear()
 
 	def statusLoop(self):
 		while not self.shouldClose:
 			time.sleep(0.5)
-			while self.connected and self.serial.isOpen():
-				self.mutexSerial.lock()
+			while self.connected and self.serial.isOpen() and not self.shouldClose:
 				self.serial.write(b"?")
-				self.mutexSerial.unlock()
 				time.sleep(self.statusInterval / 1000.0)
 
 	def connectionKeepAlive(self):
 		while not self.shouldClose:
-			time.sleep(.5)
+			time.sleep(1)
 			if not self.keepAlive and self.connected:
 				self.setConnected(False)
 			self.keepAlive = False
@@ -166,6 +167,10 @@ class GrblInterface(QObject):
 			time.sleep(.2)
 			self.serial.close()
 
+	def setStream(self, stream: bool) -> None:
+		self.stream = stream
+		self.streamStatusChanged.emit(stream)
+
 	def connectPort(self, port: str) -> None:
 		self.serial.port = port
 		self.serial.baudrate = 115200
@@ -173,8 +178,8 @@ class GrblInterface(QObject):
 			self.serial.open()
 			self.serial.write(b"\x18")
 			self.serial.flush()
-			print(self.serial.read_until(b"\r\n").decode())
-			print(self.serial.read_all().decode())
+			self.serial.readline()
+			self.serial.reset_input_buffer()
 			self.setConnected(True)
 		except:
 			self.setConnected(False)
@@ -238,6 +243,11 @@ class GrblInterface(QObject):
 	def unlock(self) -> None:
 		self.sendCmd(b"$X\n")
 
+	def loadNC(self, gcode: str) -> None:
+		self.gcode = gcode 
+
+	def startNC(self) -> None:
+		self.setStream(True)
 
 	def sendJogCmd(self, cmd: bytes) -> None:
 		if not self.connected or self.state != "Idle": return

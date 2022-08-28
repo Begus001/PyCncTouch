@@ -16,8 +16,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QGridLayout, QGroupBox, QHBoxLayout,
-    QLabel, QPushButton, QSizePolicy, QStackedWidget,
-    QVBoxLayout, QWidget)
+    QLabel, QListWidget, QListWidgetItem, QPushButton,
+    QSizePolicy, QStackedWidget, QVBoxLayout, QWidget)
 
 from custom import ConnectComboBox
 
@@ -31,9 +31,7 @@ class ViewMain(object):
         font = QFont()
         font.setPointSize(16)
         ViewMain.setFont(font)
-        self.horizontalLayout_4 = QHBoxLayout(ViewMain)
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.verticalLayout_3 = QVBoxLayout()
+        self.verticalLayout_3 = QVBoxLayout(ViewMain)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
@@ -85,15 +83,41 @@ class ViewMain(object):
         self.stackMain.addWidget(self.pageConnect)
         self.pageNC = QWidget()
         self.pageNC.setObjectName(u"pageNC")
+        self.horizontalLayout_10 = QHBoxLayout(self.pageNC)
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.horizontalLayout_9 = QHBoxLayout()
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.verticalLayout_4 = QVBoxLayout()
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.btOpen = QPushButton(self.pageNC)
         self.btOpen.setObjectName(u"btOpen")
-        self.btOpen.setGeometry(QRect(70, 40, 201, 71))
+        self.btOpen.setMinimumSize(QSize(100, 50))
+
+        self.verticalLayout_4.addWidget(self.btOpen)
+
         self.btStart = QPushButton(self.pageNC)
         self.btStart.setObjectName(u"btStart")
-        self.btStart.setGeometry(QRect(50, 140, 241, 121))
+        self.btStart.setMinimumSize(QSize(100, 50))
+
+        self.verticalLayout_4.addWidget(self.btStart)
+
         self.btUnlock = QPushButton(self.pageNC)
         self.btUnlock.setObjectName(u"btUnlock")
-        self.btUnlock.setGeometry(QRect(80, 320, 201, 81))
+        self.btUnlock.setMinimumSize(QSize(100, 50))
+
+        self.verticalLayout_4.addWidget(self.btUnlock)
+
+
+        self.horizontalLayout_9.addLayout(self.verticalLayout_4)
+
+        self.listGcode = QListWidget(self.pageNC)
+        self.listGcode.setObjectName(u"listGcode")
+
+        self.horizontalLayout_9.addWidget(self.listGcode)
+
+
+        self.horizontalLayout_10.addLayout(self.horizontalLayout_9)
+
         self.stackMain.addWidget(self.pageNC)
         self.pageJog = QWidget()
         self.pageJog.setObjectName(u"pageJog")
@@ -327,16 +351,35 @@ class ViewMain(object):
 
         self.horizontalLayout_8.addWidget(self.lbConnected)
 
-        self.label_5 = QLabel(ViewMain)
-        self.label_5.setObjectName(u"label_5")
-        self.label_5.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.lbX = QLabel(ViewMain)
+        self.lbX.setObjectName(u"lbX")
 
-        self.horizontalLayout_8.addWidget(self.label_5)
+        self.horizontalLayout_4.addWidget(self.lbX)
 
-        self.lbCurrentFeed = QLabel(ViewMain)
-        self.lbCurrentFeed.setObjectName(u"lbCurrentFeed")
+        self.lbY = QLabel(ViewMain)
+        self.lbY.setObjectName(u"lbY")
 
-        self.horizontalLayout_8.addWidget(self.lbCurrentFeed)
+        self.horizontalLayout_4.addWidget(self.lbY)
+
+        self.lbZ = QLabel(ViewMain)
+        self.lbZ.setObjectName(u"lbZ")
+
+        self.horizontalLayout_4.addWidget(self.lbZ)
+
+        self.lbF = QLabel(ViewMain)
+        self.lbF.setObjectName(u"lbF")
+
+        self.horizontalLayout_4.addWidget(self.lbF)
+
+        self.lbS = QLabel(ViewMain)
+        self.lbS.setObjectName(u"lbS")
+
+        self.horizontalLayout_4.addWidget(self.lbS)
+
+
+        self.horizontalLayout_8.addLayout(self.horizontalLayout_4)
 
         self.lbState = QLabel(ViewMain)
         self.lbState.setObjectName(u"lbState")
@@ -346,9 +389,6 @@ class ViewMain(object):
 
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_8)
-
-
-        self.horizontalLayout_4.addLayout(self.verticalLayout_3)
 
 
         self.retranslateUi(ViewMain)
@@ -425,8 +465,11 @@ class ViewMain(object):
         self.label_4.setText(QCoreApplication.translate("ViewMain", u"Feed", None))
         self.btFeed.setText(QCoreApplication.translate("ViewMain", u"5000", None))
         self.lbConnected.setText(QCoreApplication.translate("ViewMain", u"Disconnected", None))
-        self.label_5.setText(QCoreApplication.translate("ViewMain", u"Current Feed:", None))
-        self.lbCurrentFeed.setText(QCoreApplication.translate("ViewMain", u"0", None))
+        self.lbX.setText(QCoreApplication.translate("ViewMain", u"X0.000", None))
+        self.lbY.setText(QCoreApplication.translate("ViewMain", u"Y0.000", None))
+        self.lbZ.setText(QCoreApplication.translate("ViewMain", u"Z0.000", None))
+        self.lbF.setText(QCoreApplication.translate("ViewMain", u"F0.0", None))
+        self.lbS.setText(QCoreApplication.translate("ViewMain", u"S0", None))
         self.lbState.setText(QCoreApplication.translate("ViewMain", u"Idle", None))
     # retranslateUi
 
