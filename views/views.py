@@ -270,12 +270,12 @@ class ViewMain(object):
 
         self.verticalLayout_2.addWidget(self.label)
 
-        self.btZeroX = QPushButton(self.groupBox)
-        self.btZeroX.setObjectName(u"btZeroX")
-        sizePolicy.setHeightForWidth(self.btZeroX.sizePolicy().hasHeightForWidth())
-        self.btZeroX.setSizePolicy(sizePolicy)
+        self.btSetX = QPushButton(self.groupBox)
+        self.btSetX.setObjectName(u"btSetX")
+        sizePolicy.setHeightForWidth(self.btSetX.sizePolicy().hasHeightForWidth())
+        self.btSetX.setSizePolicy(sizePolicy)
 
-        self.verticalLayout_2.addWidget(self.btZeroX)
+        self.verticalLayout_2.addWidget(self.btSetX)
 
         self.label_2 = QLabel(self.groupBox)
         self.label_2.setObjectName(u"label_2")
@@ -286,12 +286,12 @@ class ViewMain(object):
 
         self.verticalLayout_2.addWidget(self.label_2)
 
-        self.btZeroY = QPushButton(self.groupBox)
-        self.btZeroY.setObjectName(u"btZeroY")
-        sizePolicy.setHeightForWidth(self.btZeroY.sizePolicy().hasHeightForWidth())
-        self.btZeroY.setSizePolicy(sizePolicy)
+        self.btSetY = QPushButton(self.groupBox)
+        self.btSetY.setObjectName(u"btSetY")
+        sizePolicy.setHeightForWidth(self.btSetY.sizePolicy().hasHeightForWidth())
+        self.btSetY.setSizePolicy(sizePolicy)
 
-        self.verticalLayout_2.addWidget(self.btZeroY)
+        self.verticalLayout_2.addWidget(self.btSetY)
 
         self.label_3 = QLabel(self.groupBox)
         self.label_3.setObjectName(u"label_3")
@@ -302,12 +302,12 @@ class ViewMain(object):
 
         self.verticalLayout_2.addWidget(self.label_3)
 
-        self.btZeroZ = QPushButton(self.groupBox)
-        self.btZeroZ.setObjectName(u"btZeroZ")
-        sizePolicy.setHeightForWidth(self.btZeroZ.sizePolicy().hasHeightForWidth())
-        self.btZeroZ.setSizePolicy(sizePolicy)
+        self.btSetZ = QPushButton(self.groupBox)
+        self.btSetZ.setObjectName(u"btSetZ")
+        sizePolicy.setHeightForWidth(self.btSetZ.sizePolicy().hasHeightForWidth())
+        self.btSetZ.setSizePolicy(sizePolicy)
 
-        self.verticalLayout_2.addWidget(self.btZeroZ)
+        self.verticalLayout_2.addWidget(self.btSetZ)
 
         self.label_4 = QLabel(self.groupBox)
         self.label_4.setObjectName(u"label_4")
@@ -421,9 +421,9 @@ class ViewMain(object):
         self.btGotoZeroX.pressed.connect(ViewMain.gotoZeroX)
         self.btGotoZeroY.pressed.connect(ViewMain.gotoZeroY)
         self.btGotoZeroZ.pressed.connect(ViewMain.gotoZeroZ)
-        self.btZeroX.pressed.connect(ViewMain.zeroWorkX)
-        self.btZeroY.pressed.connect(ViewMain.zeroWorkY)
-        self.btZeroZ.pressed.connect(ViewMain.zeroWorkZ)
+        self.btSetX.pressed.connect(ViewMain.setWorkX)
+        self.btSetY.pressed.connect(ViewMain.setWorkY)
+        self.btSetZ.pressed.connect(ViewMain.setWorkZ)
         self.btOpen.pressed.connect(ViewMain.openNC)
         self.btStart.pressed.connect(ViewMain.startNC)
         self.btUnlock.pressed.connect(ViewMain.unlock)
@@ -457,11 +457,11 @@ class ViewMain(object):
         self.btJogZN.setText(QCoreApplication.translate("ViewMain", u"Z-", None))
         self.groupBox.setTitle(QCoreApplication.translate("ViewMain", u"Position", None))
         self.label.setText(QCoreApplication.translate("ViewMain", u"X", None))
-        self.btZeroX.setText(QCoreApplication.translate("ViewMain", u"0.000", None))
+        self.btSetX.setText(QCoreApplication.translate("ViewMain", u"0.000", None))
         self.label_2.setText(QCoreApplication.translate("ViewMain", u"Y", None))
-        self.btZeroY.setText(QCoreApplication.translate("ViewMain", u"0.000", None))
+        self.btSetY.setText(QCoreApplication.translate("ViewMain", u"0.000", None))
         self.label_3.setText(QCoreApplication.translate("ViewMain", u"Z", None))
-        self.btZeroZ.setText(QCoreApplication.translate("ViewMain", u"0.000", None))
+        self.btSetZ.setText(QCoreApplication.translate("ViewMain", u"0.000", None))
         self.label_4.setText(QCoreApplication.translate("ViewMain", u"Feed", None))
         self.btFeed.setText(QCoreApplication.translate("ViewMain", u"5000", None))
         self.lbConnected.setText(QCoreApplication.translate("ViewMain", u"Disconnected", None))
@@ -721,5 +721,229 @@ class ViewOpen(object):
         ViewOpen.setWindowTitle(QCoreApplication.translate("ViewOpen", u"Dialog", None))
         self.btOpen.setText(QCoreApplication.translate("ViewOpen", u"Open", None))
         self.btCancel.setText(QCoreApplication.translate("ViewOpen", u"Cancel", None))
+    # retranslateUi
+
+# -*- coding: utf-8 -*-
+
+################################################################################
+## Form generated from reading UI file 'viewSetAxis.ui'
+##
+## Created by: Qt User Interface Compiler version 6.3.1
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QDialog, QGridLayout, QHBoxLayout,
+    QLabel, QPushButton, QSizePolicy, QVBoxLayout,
+    QWidget)
+
+class ViewSetAxis(object):
+    def setupUi(self, ViewSetAxis):
+        if not ViewSetAxis.objectName():
+            ViewSetAxis.setObjectName(u"ViewSetAxis")
+        ViewSetAxis.resize(1024, 600)
+        font = QFont()
+        font.setPointSize(20)
+        ViewSetAxis.setFont(font)
+        self.verticalLayout = QVBoxLayout(ViewSetAxis)
+        self.verticalLayout.setSpacing(10)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.btZero = QPushButton(ViewSetAxis)
+        self.btZero.setObjectName(u"btZero")
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.btZero.sizePolicy().hasHeightForWidth())
+        self.btZero.setSizePolicy(sizePolicy)
+
+        self.horizontalLayout.addWidget(self.btZero)
+
+        self.btHalf = QPushButton(ViewSetAxis)
+        self.btHalf.setObjectName(u"btHalf")
+        sizePolicy.setHeightForWidth(self.btHalf.sizePolicy().hasHeightForWidth())
+        self.btHalf.setSizePolicy(sizePolicy)
+
+        self.horizontalLayout.addWidget(self.btHalf)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout)
+
+        self.lbValue = QLabel(ViewSetAxis)
+        self.lbValue.setObjectName(u"lbValue")
+        self.lbValue.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout.addWidget(self.lbValue)
+
+        self.gridLayout = QGridLayout()
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.bt1 = QPushButton(ViewSetAxis)
+        self.bt1.setObjectName(u"bt1")
+        sizePolicy.setHeightForWidth(self.bt1.sizePolicy().hasHeightForWidth())
+        self.bt1.setSizePolicy(sizePolicy)
+
+        self.gridLayout.addWidget(self.bt1, 0, 0, 1, 1)
+
+        self.bt2 = QPushButton(ViewSetAxis)
+        self.bt2.setObjectName(u"bt2")
+        sizePolicy.setHeightForWidth(self.bt2.sizePolicy().hasHeightForWidth())
+        self.bt2.setSizePolicy(sizePolicy)
+
+        self.gridLayout.addWidget(self.bt2, 0, 1, 1, 1)
+
+        self.bt3 = QPushButton(ViewSetAxis)
+        self.bt3.setObjectName(u"bt3")
+        sizePolicy.setHeightForWidth(self.bt3.sizePolicy().hasHeightForWidth())
+        self.bt3.setSizePolicy(sizePolicy)
+
+        self.gridLayout.addWidget(self.bt3, 0, 2, 1, 1)
+
+        self.bt4 = QPushButton(ViewSetAxis)
+        self.bt4.setObjectName(u"bt4")
+        sizePolicy.setHeightForWidth(self.bt4.sizePolicy().hasHeightForWidth())
+        self.bt4.setSizePolicy(sizePolicy)
+
+        self.gridLayout.addWidget(self.bt4, 1, 0, 1, 1)
+
+        self.bt5 = QPushButton(ViewSetAxis)
+        self.bt5.setObjectName(u"bt5")
+        sizePolicy.setHeightForWidth(self.bt5.sizePolicy().hasHeightForWidth())
+        self.bt5.setSizePolicy(sizePolicy)
+
+        self.gridLayout.addWidget(self.bt5, 1, 1, 1, 1)
+
+        self.bt6 = QPushButton(ViewSetAxis)
+        self.bt6.setObjectName(u"bt6")
+        sizePolicy.setHeightForWidth(self.bt6.sizePolicy().hasHeightForWidth())
+        self.bt6.setSizePolicy(sizePolicy)
+
+        self.gridLayout.addWidget(self.bt6, 1, 2, 1, 1)
+
+        self.bt7 = QPushButton(ViewSetAxis)
+        self.bt7.setObjectName(u"bt7")
+        sizePolicy.setHeightForWidth(self.bt7.sizePolicy().hasHeightForWidth())
+        self.bt7.setSizePolicy(sizePolicy)
+
+        self.gridLayout.addWidget(self.bt7, 2, 0, 1, 1)
+
+        self.bt8 = QPushButton(ViewSetAxis)
+        self.bt8.setObjectName(u"bt8")
+        sizePolicy.setHeightForWidth(self.bt8.sizePolicy().hasHeightForWidth())
+        self.bt8.setSizePolicy(sizePolicy)
+
+        self.gridLayout.addWidget(self.bt8, 2, 1, 1, 1)
+
+        self.bt9 = QPushButton(ViewSetAxis)
+        self.bt9.setObjectName(u"bt9")
+        sizePolicy.setHeightForWidth(self.bt9.sizePolicy().hasHeightForWidth())
+        self.bt9.setSizePolicy(sizePolicy)
+
+        self.gridLayout.addWidget(self.bt9, 2, 2, 1, 1)
+
+        self.btComma = QPushButton(ViewSetAxis)
+        self.btComma.setObjectName(u"btComma")
+        sizePolicy.setHeightForWidth(self.btComma.sizePolicy().hasHeightForWidth())
+        self.btComma.setSizePolicy(sizePolicy)
+
+        self.gridLayout.addWidget(self.btComma, 3, 0, 1, 1)
+
+        self.bt0 = QPushButton(ViewSetAxis)
+        self.bt0.setObjectName(u"bt0")
+        sizePolicy.setHeightForWidth(self.bt0.sizePolicy().hasHeightForWidth())
+        self.bt0.setSizePolicy(sizePolicy)
+
+        self.gridLayout.addWidget(self.bt0, 3, 1, 1, 1)
+
+        self.btBack = QPushButton(ViewSetAxis)
+        self.btBack.setObjectName(u"btBack")
+        sizePolicy.setHeightForWidth(self.btBack.sizePolicy().hasHeightForWidth())
+        self.btBack.setSizePolicy(sizePolicy)
+
+        self.gridLayout.addWidget(self.btBack, 3, 2, 1, 1)
+
+
+        self.verticalLayout.addLayout(self.gridLayout)
+
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.btCancel = QPushButton(ViewSetAxis)
+        self.btCancel.setObjectName(u"btCancel")
+        sizePolicy.setHeightForWidth(self.btCancel.sizePolicy().hasHeightForWidth())
+        self.btCancel.setSizePolicy(sizePolicy)
+
+        self.horizontalLayout_2.addWidget(self.btCancel)
+
+        self.btOkPositive = QPushButton(ViewSetAxis)
+        self.btOkPositive.setObjectName(u"btOkPositive")
+        sizePolicy.setHeightForWidth(self.btOkPositive.sizePolicy().hasHeightForWidth())
+        self.btOkPositive.setSizePolicy(sizePolicy)
+
+        self.horizontalLayout_2.addWidget(self.btOkPositive)
+
+        self.btOkNegative = QPushButton(ViewSetAxis)
+        self.btOkNegative.setObjectName(u"btOkNegative")
+        sizePolicy.setHeightForWidth(self.btOkNegative.sizePolicy().hasHeightForWidth())
+        self.btOkNegative.setSizePolicy(sizePolicy)
+
+        self.horizontalLayout_2.addWidget(self.btOkNegative)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
+
+        self.verticalLayout.setStretch(0, 1)
+        self.verticalLayout.setStretch(1, 1)
+        self.verticalLayout.setStretch(2, 4)
+        self.verticalLayout.setStretch(3, 1)
+
+        self.retranslateUi(ViewSetAxis)
+        self.bt0.pressed.connect(ViewSetAxis.keypadEntry)
+        self.bt1.pressed.connect(ViewSetAxis.keypadEntry)
+        self.bt2.pressed.connect(ViewSetAxis.keypadEntry)
+        self.bt3.pressed.connect(ViewSetAxis.keypadEntry)
+        self.bt4.pressed.connect(ViewSetAxis.keypadEntry)
+        self.bt5.pressed.connect(ViewSetAxis.keypadEntry)
+        self.bt6.pressed.connect(ViewSetAxis.keypadEntry)
+        self.bt7.pressed.connect(ViewSetAxis.keypadEntry)
+        self.bt8.pressed.connect(ViewSetAxis.keypadEntry)
+        self.bt9.pressed.connect(ViewSetAxis.keypadEntry)
+        self.btBack.pressed.connect(ViewSetAxis.keypadEntry)
+        self.btComma.pressed.connect(ViewSetAxis.keypadEntry)
+        self.btZero.pressed.connect(ViewSetAxis.returnZero)
+        self.btHalf.pressed.connect(ViewSetAxis.returnHalf)
+        self.btOkPositive.pressed.connect(ViewSetAxis.returnValue)
+        self.btOkNegative.pressed.connect(ViewSetAxis.returnValueNegative)
+        self.btCancel.pressed.connect(ViewSetAxis.cancel)
+
+        QMetaObject.connectSlotsByName(ViewSetAxis)
+    # setupUi
+
+    def retranslateUi(self, ViewSetAxis):
+        ViewSetAxis.setWindowTitle(QCoreApplication.translate("ViewSetAxis", u"Dialog", None))
+        self.btZero.setText(QCoreApplication.translate("ViewSetAxis", u"Zero", None))
+        self.btHalf.setText(QCoreApplication.translate("ViewSetAxis", u"Half", None))
+        self.lbValue.setText("")
+        self.bt1.setText(QCoreApplication.translate("ViewSetAxis", u"1", None))
+        self.bt2.setText(QCoreApplication.translate("ViewSetAxis", u"2", None))
+        self.bt3.setText(QCoreApplication.translate("ViewSetAxis", u"3", None))
+        self.bt4.setText(QCoreApplication.translate("ViewSetAxis", u"4", None))
+        self.bt5.setText(QCoreApplication.translate("ViewSetAxis", u"5", None))
+        self.bt6.setText(QCoreApplication.translate("ViewSetAxis", u"6", None))
+        self.bt7.setText(QCoreApplication.translate("ViewSetAxis", u"7", None))
+        self.bt8.setText(QCoreApplication.translate("ViewSetAxis", u"8", None))
+        self.bt9.setText(QCoreApplication.translate("ViewSetAxis", u"9", None))
+        self.btComma.setText(QCoreApplication.translate("ViewSetAxis", u".", None))
+        self.bt0.setText(QCoreApplication.translate("ViewSetAxis", u"0", None))
+        self.btBack.setText(QCoreApplication.translate("ViewSetAxis", u"Backspace", None))
+        self.btCancel.setText(QCoreApplication.translate("ViewSetAxis", u"Cancel", None))
+        self.btOkPositive.setText(QCoreApplication.translate("ViewSetAxis", u"OK Positive", None))
+        self.btOkNegative.setText(QCoreApplication.translate("ViewSetAxis", u"OK Negative", None))
     # retranslateUi
 

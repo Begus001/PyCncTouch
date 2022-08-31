@@ -62,9 +62,9 @@ class WinMain(QWidget):
 			self.viewMain.lbConnected.setText("Connected")
 
 	def grblStatusUpdate(self, s: GrblStatus) -> None:
-		self.viewMain.btZeroX.setText("%.3f" % (s.x))
-		self.viewMain.btZeroY.setText("%.3f" % (s.y))
-		self.viewMain.btZeroZ.setText("%.3f" % (s.z))
+		self.viewMain.btSetX.setText("%.3f" % (s.x))
+		self.viewMain.btSetY.setText("%.3f" % (s.y))
+		self.viewMain.btSetZ.setText("%.3f" % (s.z))
 		self.viewMain.lbX.setText("X%.3f" % (s.x))
 		self.viewMain.lbY.setText("Y%.3f" % (s.y))
 		self.viewMain.lbZ.setText("Z%.3f" % (s.z))
@@ -135,14 +135,20 @@ class WinMain(QWidget):
 	def gotoZeroZ(self) -> None:
 		self.grbl.gotoZeroZ()
 
-	def zeroWorkX(self) -> None:
-		self.grbl.zeroWorkX()
+	def setWorkX(self) -> None:
+		diag = DiagSetAxis(float(self.viewMain.btSetX.text()))
+		if diag.exec():
+			self.grbl.setX(diag.enteredValue)
 
-	def zeroWorkY(self) -> None:
-		self.grbl.zeroWorkY()
+	def setWorkY(self) -> None:
+		diag = DiagSetAxis(float(self.viewMain.btSetY.text()))
+		if diag.exec():
+			self.grbl.setY(diag.enteredValue)
 
-	def zeroWorkZ(self) -> None:
-		self.grbl.zeroWorkZ()
+	def setWorkZ(self) -> None:
+		diag = DiagSetAxis(float(self.viewMain.btSetZ.text()))
+		if diag.exec():
+			self.grbl.setZ(diag.enteredValue)
 
 	def fillDevices(self) -> None:
 		self.viewMain.cbPorts.clear()
@@ -206,6 +212,53 @@ class DiagOpen(QDialog):
 
 	def cancel(self) -> None:
 		self.done(0)
+
+
+class DiagSetAxis(QDialog):
+	def __init__(self, currentValue: float):
+		super().__init__()
+		self.setWindowFlag(Qt.FramelessWindowHint)
+		self.viewSetAxis = ViewSetAxis()
+		self.viewSetAxis.setupUi(self)
+
+		self.currentValue: float = currentValue
+
+		self.enteredValue: float
+	
+	def keypadEntry(self) -> None:
+		val = QObject.sender(self).text()
+		current = self.viewSetAxis.lbValue.text()
+		if val == "Backspace":
+			if len(current) > 0:
+				self.viewSetAxis.lbValue.setText(current[:-1])
+		elif val == ".":
+			if "." not in current and len(current) < 9:
+				self.viewSetAxis.lbValue.setText(current + val)
+		else:
+			if len(current) < 10:
+				self.viewSetAxis.lbValue.setText(current + val)
+		
+	def returnValue(self) -> None:
+		val = self.viewSetAxis.lbValue.text()
+		self.enteredValue = float(val)
+		self.done(1)
+		
+	def returnValueNegative(self) -> None:
+		val = self.viewSetAxis.lbValue.text()
+		self.enteredValue = float(val)
+		self.enteredValue = -float(val)
+		self.done(1)
+
+	def cancel(self) -> None:
+		self.done(0)
+		
+	def returnZero(self) -> None:
+		self.enteredValue = 0.0
+		self.done(1)
+		
+	def returnHalf(self) -> None:
+		self.enteredValue = self.currentValue / 2
+		self.done(1)
 
 
 app = QApplication()

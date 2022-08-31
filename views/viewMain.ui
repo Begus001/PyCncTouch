@@ -425,7 +425,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="btZeroX">
+           <widget class="QPushButton" name="btSetX">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -459,7 +459,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="btZeroY">
+           <widget class="QPushButton" name="btSetY">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -493,7 +493,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="btZeroZ">
+           <widget class="QPushButton" name="btSetZ">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -1088,10 +1088,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>btZeroX</sender>
+   <sender>btSetX</sender>
    <signal>pressed()</signal>
    <receiver>ViewMain</receiver>
-   <slot>zeroWorkX()</slot>
+   <slot>setWorkX()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>88</x>
@@ -1104,10 +1104,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>btZeroY</sender>
+   <sender>btSetY</sender>
    <signal>pressed()</signal>
    <receiver>ViewMain</receiver>
-   <slot>zeroWorkY()</slot>
+   <slot>setWorkY()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>88</x>
@@ -1120,10 +1120,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>btZeroZ</sender>
+   <sender>btSetZ</sender>
    <signal>pressed()</signal>
    <receiver>ViewMain</receiver>
-   <slot>zeroWorkZ()</slot>
+   <slot>setWorkZ()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>88</x>
@@ -1201,9 +1201,9 @@
   <slot>gotoZeroX()</slot>
   <slot>gotoZeroY()</slot>
   <slot>gotoZeroZ()</slot>
-  <slot>zeroWorkX()</slot>
-  <slot>zeroWorkY()</slot>
-  <slot>zeroWorkZ()</slot>
+  <slot>setWorkX()</slot>
+  <slot>setWorkY()</slot>
+  <slot>setWorkZ()</slot>
   <slot>openNC()</slot>
   <slot>startNC()</slot>
   <slot>unlock()</slot>

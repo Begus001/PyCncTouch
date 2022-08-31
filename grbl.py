@@ -231,14 +231,14 @@ class GrblInterface(QObject):
 	def gotoZeroZ(self) -> None:
 		self.sendCmd(b"G0 Z0\n")
 
-	def zeroWorkX(self) -> None:
-		self.sendCmd(b"G10 L20 P0 X0\n")
+	def setX(self, val: float) -> None:
+		self.sendCmd(b"G10 L20 P0 X%f\n" % (val))
 
-	def zeroWorkY(self) -> None:
-		self.sendCmd(b"G10 L20 P0 Y0\n")
+	def setY(self, val: float) -> None:
+		self.sendCmd(b"G10 L20 P0 Y%f\n" % (val))
 
-	def zeroWorkZ(self) -> None:
-		self.sendCmd(b"G10 L20 P0 Z0\n")
+	def setZ(self, val: float) -> None:
+		self.sendCmd(b"G10 L20 P0 Z%f\n" % (val))
 
 	def unlock(self) -> None:
 		self.sendCmd(b"$X\n")
