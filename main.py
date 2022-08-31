@@ -9,6 +9,7 @@ from grbl import *
 
 GRBL_UPDATE_INTERVAL_MS = 100
 DEFAULT_FEED = 5000
+DEFAULT_INCDIST = 0.01
 NC_DIR = "/home/main/sync/cnc/"
 
 
@@ -19,7 +20,7 @@ class WinMain(QWidget):
 		self.viewMain = ViewMain()
 		self.viewMain.setupUi(self)
 
-		self.grbl = GrblInterface(DEFAULT_FEED, GRBL_UPDATE_INTERVAL_MS)
+		self.grbl = GrblInterface(DEFAULT_FEED, DEFAULT_INCDIST, GRBL_UPDATE_INTERVAL_MS)
 		self.grbl.connectionChanged.connect(self.grblConnectionChanged)
 		self.grbl.statusUpdate.connect(self.grblStatusUpdate)
 		self.grbl.stateChanged.connect(self.grblStateChanged)
@@ -27,6 +28,10 @@ class WinMain(QWidget):
 		self.grbl.streamStatusChanged.connect(self.grblStreamStatusChanged)
 
 		self.destroyed.connect(self.closeGrblThreads)
+
+		self.jogMode: bool = True
+		self.jogFeed: int = DEFAULT_FEED
+		self.incDist: float = DEFAULT_INCDIST
 
 	def closeGrblThreads(self):
 		self.grbl.shouldClose = True
@@ -88,40 +93,77 @@ class WinMain(QWidget):
 		self.viewMain.stackMain.setCurrentIndex(QObject.sender(self).property("pageIndex"))
 
 	def setFeed(self) -> None:
-		self.diagFeed = DiagFeed()
-		result = self.diagFeed.exec()
-		self.viewMain.btFeed.setText(str(result))
-		self.grbl.jogFeed = result
+		if self.jogMode:
+			diagFeed = DiagFeed()
+			self.jogFeed = diagFeed.exec()
+			self.viewMain.btFeed.setText(str(self.jogFeed))
+			self.grbl.jogFeed = self.jogFeed
+		else:
+			diagDistance = DiagDistance()
+			diagDistance.exec()
+			self.incDist = diagDistance.selectedDistance
+			self.viewMain.btFeed.setText(str(self.incDist))
+			self.grbl.incDist = self.incDist
 
 	def jogXNYP(self) -> None:
-		self.grbl.jogXNYP()
+		if self.jogMode:
+			self.grbl.jogXNYP()
+		else:
+			self.grbl.moveXNYP()
 
 	def jogYP(self) -> None:
-		self.grbl.jogYP()
+		if self.jogMode:
+			self.grbl.jogYP()
+		else:
+			self.grbl.moveYP()
 
 	def jogXPYP(self) -> None:
-		self.grbl.jogXPYP()
+		if self.jogMode:
+			self.grbl.jogXPYP()
+		else:
+			self.grbl.moveXPYP()
 
 	def jogXN(self) -> None:
-		self.grbl.jogXN()
+		if self.jogMode:
+			self.grbl.jogXN()
+		else:
+			self.grbl.moveXN()
 
 	def jogXP(self) -> None:
-		self.grbl.jogXP()
+		if self.jogMode:
+			self.grbl.jogXP()
+		else:
+			self.grbl.moveXP()
 
 	def jogXNYN(self) -> None:
-		self.grbl.jogXNYN()
+		if self.jogMode:
+			self.grbl.jogXNYN()
+		else:
+			self.grbl.moveXNYN()
 
 	def jogYN(self) -> None:
-		self.grbl.jogYN()
+		if self.jogMode:
+			self.grbl.jogYN()
+		else:
+			self.grbl.moveYN()
 
 	def jogXPYN(self) -> None:
-		self.grbl.jogXPYN()
+		if self.jogMode:
+			self.grbl.jogXPYN()
+		else:
+			self.grbl.moveXPYN()
 
 	def jogZP(self) -> None:
-		self.grbl.jogZP()
+		if self.jogMode:
+			self.grbl.jogZP()
+		else:
+			self.grbl.moveZP()
 
 	def jogZN(self) -> None:
-		self.grbl.jogZN()
+		if self.jogMode:
+			self.grbl.jogZN()
+		else:
+			self.grbl.moveZN()
 
 	def jogCancel(self) -> None:
 		self.grbl.jogCancel()
@@ -134,6 +176,15 @@ class WinMain(QWidget):
 
 	def gotoZeroZ(self) -> None:
 		self.grbl.gotoZeroZ()
+
+	def switchJogMode(self) -> None:
+		self.jogMode = not self.jogMode
+		if self.jogMode:
+			self.viewMain.btFeed.setText(str(self.jogFeed))
+			self.viewMain.btJogMode.setText("Feed")
+		else:
+			self.viewMain.btFeed.setText(str(self.incDist))
+			self.viewMain.btJogMode.setText("Distance")
 
 	def setWorkX(self) -> None:
 		diag = DiagSetAxis(float(self.viewMain.btSetX.text()))
@@ -187,6 +238,20 @@ class DiagFeed(QDialog):
 	def returnFeed(self) -> None:
 		feed = int(QObject.sender(self).text())
 		self.done(feed)
+
+
+class DiagDistance(QDialog):
+	def __init__(self) -> None:
+		super().__init__()
+		self.setWindowFlag(Qt.FramelessWindowHint)
+		self.viewDistance = ViewDistance()
+		self.viewDistance.setupUi(self)
+		self.selectedDistance: float
+
+	def returnDistance(self) -> None:
+		distance = float(QObject.sender(self).text())
+		self.selectedDistance = distance
+		self.close()
 
 
 class DiagOpen(QDialog):

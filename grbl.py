@@ -32,7 +32,7 @@ class GrblInterface(QObject):
 	processedIndexChanged = Signal(int)
 	streamStatusChanged = Signal(bool)
 
-	def __init__(self, defaultFeed: float, statusInterval: int):
+	def __init__(self, defaultFeed: int, defaultIncDist: float, statusInterval: int):
 		super().__init__()
 		self.connected: bool = False
 		self.serial = s.Serial()
@@ -41,7 +41,8 @@ class GrblInterface(QObject):
 		self.stream: bool = False
 		self.gcode: str = ""
 
-		self.jogFeed: float = defaultFeed
+		self.jogFeed: int = defaultFeed
+		self.incDist: float = defaultIncDist
 		self.currentFeed: float = 0.0
 
 		self.statusInterval = statusInterval
@@ -221,6 +222,56 @@ class GrblInterface(QObject):
 	def jogCancel(self) -> None:
 		if not self.connected: return
 		self.serial.write(b"\x85")
+
+	def moveXNYP(self) -> None:
+		self.sendCmd(b"G91\n")
+		self.sendJogCmd(b"G0 X-%f Y%f\n" % (self.incDist, self.incDist))
+		self.sendCmd(b"G90\n")
+
+	def moveYP(self) -> None:
+		self.sendCmd(b"G91\n")
+		self.sendJogCmd(b"G0 Y%f\n" % (self.incDist))
+		self.sendCmd(b"G90\n")
+
+	def moveXPYP(self) -> None:
+		self.sendCmd(b"G91\n")
+		self.sendJogCmd(b"G0 X%f Y%f\n" % (self.incDist, self.incDist))
+		self.sendCmd(b"G90\n")
+
+	def moveXN(self) -> None:
+		self.sendCmd(b"G91\n")
+		self.sendJogCmd(b"G0 X-%f\n" % (self.incDist))
+		self.sendCmd(b"G90\n")
+
+	def moveXP(self) -> None:
+		self.sendCmd(b"G91\n")
+		self.sendJogCmd(b"G0 X%f\n" % (self.incDist))
+		self.sendCmd(b"G90\n")
+
+	def moveXNYN(self) -> None:
+		self.sendCmd(b"G91\n")
+		self.sendJogCmd(b"G0 X-%f Y-%f\n" % (self.incDist, self.incDist))
+		self.sendCmd(b"G90\n")
+
+	def moveYN(self) -> None:
+		self.sendCmd(b"G91\n")
+		self.sendJogCmd(b"G0 Y-%f\n" % (self.incDist))
+		self.sendCmd(b"G90\n")
+
+	def moveXPYN(self) -> None:
+		self.sendCmd(b"G91\n")
+		self.sendJogCmd(b"G0 X%f Y-%f\n" % (self.incDist, self.incDist))
+		self.sendCmd(b"G90\n")
+	
+	def moveZP(self) -> None:
+		self.sendCmd(b"G91\n")
+		self.sendJogCmd(b"G0 Z%f\n" % (self.incDist))
+		self.sendCmd(b"G90\n")
+	
+	def moveZN(self) -> None:
+		self.sendCmd(b"G91\n")
+		self.sendJogCmd(b"G0 Z-%f\n" % (self.incDist))
+		self.sendCmd(b"G90\n")
 
 	def gotoZeroX(self) -> None:
 		self.sendCmd(b"G0 X0\n")

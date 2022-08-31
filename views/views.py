@@ -17,7 +17,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QGridLayout, QGroupBox, QHBoxLayout,
     QLabel, QListWidget, QListWidgetItem, QPushButton,
-    QSizePolicy, QStackedWidget, QVBoxLayout, QWidget)
+    QSizePolicy, QSpacerItem, QStackedWidget, QVBoxLayout,
+    QWidget)
 
 from custom import ConnectComboBox
 
@@ -309,16 +310,16 @@ class ViewMain(object):
 
         self.verticalLayout_2.addWidget(self.btSetZ)
 
-        self.label_4 = QLabel(self.groupBox)
-        self.label_4.setObjectName(u"label_4")
-        sizePolicy.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
-        self.label_4.setSizePolicy(sizePolicy)
-        font3 = QFont()
-        font3.setPointSize(18)
-        self.label_4.setFont(font3)
-        self.label_4.setAlignment(Qt.AlignBottom|Qt.AlignHCenter)
+        self.verticalSpacer = QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.verticalLayout_2.addWidget(self.label_4)
+        self.verticalLayout_2.addItem(self.verticalSpacer)
+
+        self.btJogMode = QPushButton(self.groupBox)
+        self.btJogMode.setObjectName(u"btJogMode")
+        sizePolicy.setHeightForWidth(self.btJogMode.sizePolicy().hasHeightForWidth())
+        self.btJogMode.setSizePolicy(sizePolicy)
+
+        self.verticalLayout_2.addWidget(self.btJogMode)
 
         self.btFeed = QPushButton(self.groupBox)
         self.btFeed.setObjectName(u"btFeed")
@@ -332,8 +333,9 @@ class ViewMain(object):
         self.verticalLayout_2.setStretch(3, 10)
         self.verticalLayout_2.setStretch(4, 7)
         self.verticalLayout_2.setStretch(5, 10)
-        self.verticalLayout_2.setStretch(6, 10)
+        self.verticalLayout_2.setStretch(6, 5)
         self.verticalLayout_2.setStretch(7, 10)
+        self.verticalLayout_2.setStretch(8, 10)
 
         self.horizontalLayout_7.addWidget(self.groupBox)
 
@@ -427,6 +429,7 @@ class ViewMain(object):
         self.btOpen.pressed.connect(ViewMain.openNC)
         self.btStart.pressed.connect(ViewMain.startNC)
         self.btUnlock.pressed.connect(ViewMain.unlock)
+        self.btJogMode.pressed.connect(ViewMain.switchJogMode)
 
         QMetaObject.connectSlotsByName(ViewMain)
     # setupUi
@@ -462,7 +465,7 @@ class ViewMain(object):
         self.btSetY.setText(QCoreApplication.translate("ViewMain", u"0.000", None))
         self.label_3.setText(QCoreApplication.translate("ViewMain", u"Z", None))
         self.btSetZ.setText(QCoreApplication.translate("ViewMain", u"0.000", None))
-        self.label_4.setText(QCoreApplication.translate("ViewMain", u"Feed", None))
+        self.btJogMode.setText(QCoreApplication.translate("ViewMain", u"Feed", None))
         self.btFeed.setText(QCoreApplication.translate("ViewMain", u"5000", None))
         self.lbConnected.setText(QCoreApplication.translate("ViewMain", u"Disconnected", None))
         self.lbX.setText(QCoreApplication.translate("ViewMain", u"X0.000", None))
@@ -948,5 +951,207 @@ class ViewSetAxis(object):
         self.btCancel.setText(QCoreApplication.translate("ViewSetAxis", u"Cancel", None))
         self.btOkPositive.setText(QCoreApplication.translate("ViewSetAxis", u"OK Positive", None))
         self.btOkNegative.setText(QCoreApplication.translate("ViewSetAxis", u"OK Negative", None))
+    # retranslateUi
+
+# -*- coding: utf-8 -*-
+
+################################################################################
+## Form generated from reading UI file 'viewDistance.ui'
+##
+## Created by: Qt User Interface Compiler version 6.3.1
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QDialog, QGridLayout, QPushButton,
+    QSizePolicy, QWidget)
+
+class ViewDistance(object):
+    def setupUi(self, ViewDistance):
+        if not ViewDistance.objectName():
+            ViewDistance.setObjectName(u"ViewDistance")
+        ViewDistance.resize(1024, 600)
+        self.gridLayout = QGridLayout(ViewDistance)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.bt01 = QPushButton(ViewDistance)
+        self.bt01.setObjectName(u"bt01")
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.bt01.sizePolicy().hasHeightForWidth())
+        self.bt01.setSizePolicy(sizePolicy)
+        font = QFont()
+        font.setPointSize(20)
+        self.bt01.setFont(font)
+
+        self.gridLayout.addWidget(self.bt01, 0, 0, 1, 1)
+
+        self.bt02 = QPushButton(ViewDistance)
+        self.bt02.setObjectName(u"bt02")
+        sizePolicy.setHeightForWidth(self.bt02.sizePolicy().hasHeightForWidth())
+        self.bt02.setSizePolicy(sizePolicy)
+        self.bt02.setFont(font)
+
+        self.gridLayout.addWidget(self.bt02, 0, 1, 1, 1)
+
+        self.bt03 = QPushButton(ViewDistance)
+        self.bt03.setObjectName(u"bt03")
+        sizePolicy.setHeightForWidth(self.bt03.sizePolicy().hasHeightForWidth())
+        self.bt03.setSizePolicy(sizePolicy)
+        self.bt03.setFont(font)
+
+        self.gridLayout.addWidget(self.bt03, 0, 2, 1, 1)
+
+        self.bt04 = QPushButton(ViewDistance)
+        self.bt04.setObjectName(u"bt04")
+        sizePolicy.setHeightForWidth(self.bt04.sizePolicy().hasHeightForWidth())
+        self.bt04.setSizePolicy(sizePolicy)
+        self.bt04.setFont(font)
+
+        self.gridLayout.addWidget(self.bt04, 0, 3, 1, 1)
+
+        self.bt05 = QPushButton(ViewDistance)
+        self.bt05.setObjectName(u"bt05")
+        sizePolicy.setHeightForWidth(self.bt05.sizePolicy().hasHeightForWidth())
+        self.bt05.setSizePolicy(sizePolicy)
+        self.bt05.setFont(font)
+
+        self.gridLayout.addWidget(self.bt05, 1, 0, 1, 1)
+
+        self.bt06 = QPushButton(ViewDistance)
+        self.bt06.setObjectName(u"bt06")
+        sizePolicy.setHeightForWidth(self.bt06.sizePolicy().hasHeightForWidth())
+        self.bt06.setSizePolicy(sizePolicy)
+        self.bt06.setFont(font)
+
+        self.gridLayout.addWidget(self.bt06, 1, 1, 1, 1)
+
+        self.bt07 = QPushButton(ViewDistance)
+        self.bt07.setObjectName(u"bt07")
+        sizePolicy.setHeightForWidth(self.bt07.sizePolicy().hasHeightForWidth())
+        self.bt07.setSizePolicy(sizePolicy)
+        self.bt07.setFont(font)
+
+        self.gridLayout.addWidget(self.bt07, 1, 2, 1, 1)
+
+        self.bt08 = QPushButton(ViewDistance)
+        self.bt08.setObjectName(u"bt08")
+        sizePolicy.setHeightForWidth(self.bt08.sizePolicy().hasHeightForWidth())
+        self.bt08.setSizePolicy(sizePolicy)
+        self.bt08.setFont(font)
+
+        self.gridLayout.addWidget(self.bt08, 1, 3, 1, 1)
+
+        self.bt09 = QPushButton(ViewDistance)
+        self.bt09.setObjectName(u"bt09")
+        sizePolicy.setHeightForWidth(self.bt09.sizePolicy().hasHeightForWidth())
+        self.bt09.setSizePolicy(sizePolicy)
+        self.bt09.setFont(font)
+
+        self.gridLayout.addWidget(self.bt09, 2, 0, 1, 1)
+
+        self.bt10 = QPushButton(ViewDistance)
+        self.bt10.setObjectName(u"bt10")
+        sizePolicy.setHeightForWidth(self.bt10.sizePolicy().hasHeightForWidth())
+        self.bt10.setSizePolicy(sizePolicy)
+        self.bt10.setFont(font)
+
+        self.gridLayout.addWidget(self.bt10, 2, 1, 1, 1)
+
+        self.bt11 = QPushButton(ViewDistance)
+        self.bt11.setObjectName(u"bt11")
+        sizePolicy.setHeightForWidth(self.bt11.sizePolicy().hasHeightForWidth())
+        self.bt11.setSizePolicy(sizePolicy)
+        self.bt11.setFont(font)
+
+        self.gridLayout.addWidget(self.bt11, 2, 2, 1, 1)
+
+        self.bt12 = QPushButton(ViewDistance)
+        self.bt12.setObjectName(u"bt12")
+        sizePolicy.setHeightForWidth(self.bt12.sizePolicy().hasHeightForWidth())
+        self.bt12.setSizePolicy(sizePolicy)
+        self.bt12.setFont(font)
+
+        self.gridLayout.addWidget(self.bt12, 2, 3, 1, 1)
+
+        self.bt13 = QPushButton(ViewDistance)
+        self.bt13.setObjectName(u"bt13")
+        sizePolicy.setHeightForWidth(self.bt13.sizePolicy().hasHeightForWidth())
+        self.bt13.setSizePolicy(sizePolicy)
+        self.bt13.setFont(font)
+
+        self.gridLayout.addWidget(self.bt13, 3, 0, 1, 1)
+
+        self.bt14 = QPushButton(ViewDistance)
+        self.bt14.setObjectName(u"bt14")
+        sizePolicy.setHeightForWidth(self.bt14.sizePolicy().hasHeightForWidth())
+        self.bt14.setSizePolicy(sizePolicy)
+        self.bt14.setFont(font)
+
+        self.gridLayout.addWidget(self.bt14, 3, 1, 1, 1)
+
+        self.bt15 = QPushButton(ViewDistance)
+        self.bt15.setObjectName(u"bt15")
+        sizePolicy.setHeightForWidth(self.bt15.sizePolicy().hasHeightForWidth())
+        self.bt15.setSizePolicy(sizePolicy)
+        self.bt15.setFont(font)
+
+        self.gridLayout.addWidget(self.bt15, 3, 2, 1, 1)
+
+        self.bt16 = QPushButton(ViewDistance)
+        self.bt16.setObjectName(u"bt16")
+        sizePolicy.setHeightForWidth(self.bt16.sizePolicy().hasHeightForWidth())
+        self.bt16.setSizePolicy(sizePolicy)
+        self.bt16.setFont(font)
+
+        self.gridLayout.addWidget(self.bt16, 3, 3, 1, 1)
+
+
+        self.retranslateUi(ViewDistance)
+        self.bt01.pressed.connect(ViewDistance.returnDistance)
+        self.bt02.pressed.connect(ViewDistance.returnDistance)
+        self.bt03.pressed.connect(ViewDistance.returnDistance)
+        self.bt04.pressed.connect(ViewDistance.returnDistance)
+        self.bt05.pressed.connect(ViewDistance.returnDistance)
+        self.bt06.pressed.connect(ViewDistance.returnDistance)
+        self.bt07.pressed.connect(ViewDistance.returnDistance)
+        self.bt08.pressed.connect(ViewDistance.returnDistance)
+        self.bt09.pressed.connect(ViewDistance.returnDistance)
+        self.bt10.pressed.connect(ViewDistance.returnDistance)
+        self.bt11.pressed.connect(ViewDistance.returnDistance)
+        self.bt12.pressed.connect(ViewDistance.returnDistance)
+        self.bt13.pressed.connect(ViewDistance.returnDistance)
+        self.bt14.pressed.connect(ViewDistance.returnDistance)
+        self.bt15.pressed.connect(ViewDistance.returnDistance)
+        self.bt16.pressed.connect(ViewDistance.returnDistance)
+
+        QMetaObject.connectSlotsByName(ViewDistance)
+    # setupUi
+
+    def retranslateUi(self, ViewDistance):
+        ViewDistance.setWindowTitle(QCoreApplication.translate("ViewDistance", u"Dialog", None))
+        self.bt01.setText(QCoreApplication.translate("ViewDistance", u"0.001", None))
+        self.bt02.setText(QCoreApplication.translate("ViewDistance", u"0.005", None))
+        self.bt03.setText(QCoreApplication.translate("ViewDistance", u"0.01", None))
+        self.bt04.setText(QCoreApplication.translate("ViewDistance", u"0.05", None))
+        self.bt05.setText(QCoreApplication.translate("ViewDistance", u"0.1", None))
+        self.bt06.setText(QCoreApplication.translate("ViewDistance", u"0.5", None))
+        self.bt07.setText(QCoreApplication.translate("ViewDistance", u"1", None))
+        self.bt08.setText(QCoreApplication.translate("ViewDistance", u"5", None))
+        self.bt09.setText(QCoreApplication.translate("ViewDistance", u"10", None))
+        self.bt10.setText(QCoreApplication.translate("ViewDistance", u"20", None))
+        self.bt11.setText(QCoreApplication.translate("ViewDistance", u"30", None))
+        self.bt12.setText(QCoreApplication.translate("ViewDistance", u"40", None))
+        self.bt13.setText(QCoreApplication.translate("ViewDistance", u"50", None))
+        self.bt14.setText(QCoreApplication.translate("ViewDistance", u"100", None))
+        self.bt15.setText(QCoreApplication.translate("ViewDistance", u"150", None))
+        self.bt16.setText(QCoreApplication.translate("ViewDistance", u"200", None))
     # retranslateUi
 
