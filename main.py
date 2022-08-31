@@ -8,8 +8,8 @@ from grbl import *
 
 
 GRBL_UPDATE_INTERVAL_MS = 100
-DEFAULT_FEED = 5000.0
-NC_DIR = "/home/main/sync/cnc"
+DEFAULT_FEED = 5000
+NC_DIR = "/home/main/sync/cnc/"
 
 
 class WinMain(QWidget):
@@ -195,20 +195,37 @@ class DiagOpen(QDialog):
 		self.setWindowFlag(Qt.FramelessWindowHint)
 		self.viewOpen = ViewOpen()
 		self.viewOpen.setupUi(self)
+		self.currentDir: str = NC_DIR
 		self.selectedFile: str
 
-		for name in os.listdir(NC_DIR):
-			if os.path.isdir(os.path.join(NC_DIR, name)):
+		self.listdir()
+
+	def listdir(self) -> None:
+		self.viewOpen.listFiles.clear()
+		if self.currentDir != "/":
+			self.viewOpen.listFiles.addItem(QListWidgetItem(QIcon.fromTheme("folder"), ".."))
+		for name in sorted(os.listdir(self.currentDir)):
+			if os.path.isdir(os.path.join(self.currentDir, name)):
 				item = QListWidgetItem(QIcon.fromTheme("folder"), name)
 			else:
 				item = QListWidgetItem(QIcon.fromTheme("document"), name)
 			item.setSizeHint(QSize(0, 60))
 			item.setFont(QFont(self.font().family(), 20))
 			self.viewOpen.listFiles.addItem(item)
+		self.viewOpen.listFiles.setCurrentRow(0)
 
 	def returnFile(self) -> None:
-		self.selectedFile = os.path.join(NC_DIR, self.viewOpen.listFiles.selectedItems()[0].text())
-		self.done(1)
+		sel = self.viewOpen.listFiles.selectedItems()[0].text()
+		path = os.path.join(self.currentDir, sel)
+		if sel == "..":
+			self.currentDir = self.currentDir[:self.currentDir[:-1].rindex("/")+1]
+			self.listdir()
+		elif os.path.isdir(path):
+			self.currentDir = path
+			self.listdir()
+		else:
+			self.selectedFile = path
+			self.done(1)
 
 	def cancel(self) -> None:
 		self.done(0)

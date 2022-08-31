@@ -693,33 +693,36 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QDialog, QListWidget, QListWidgetItem,
-    QPushButton, QSizePolicy, QWidget)
+    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
 
 class ViewOpen(object):
     def setupUi(self, ViewOpen):
         if not ViewOpen.objectName():
             ViewOpen.setObjectName(u"ViewOpen")
         ViewOpen.resize(1024, 600)
+        self.verticalLayout = QVBoxLayout(ViewOpen)
+        self.verticalLayout.setObjectName(u"verticalLayout")
         self.listFiles = QListWidget(ViewOpen)
         self.listFiles.setObjectName(u"listFiles")
-        self.listFiles.setGeometry(QRect(10, 10, 871, 561))
-        self.btOpen = QPushButton(ViewOpen)
-        self.btOpen.setObjectName(u"btOpen")
-        self.btOpen.setGeometry(QRect(910, 40, 101, 61))
+
+        self.verticalLayout.addWidget(self.listFiles)
+
         self.btCancel = QPushButton(ViewOpen)
         self.btCancel.setObjectName(u"btCancel")
-        self.btCancel.setGeometry(QRect(910, 120, 101, 71))
+        self.btCancel.setMinimumSize(QSize(0, 50))
+
+        self.verticalLayout.addWidget(self.btCancel)
+
 
         self.retranslateUi(ViewOpen)
-        self.btOpen.pressed.connect(ViewOpen.returnFile)
         self.btCancel.pressed.connect(ViewOpen.cancel)
+        self.listFiles.itemClicked.connect(ViewOpen.returnFile)
 
         QMetaObject.connectSlotsByName(ViewOpen)
     # setupUi
 
     def retranslateUi(self, ViewOpen):
         ViewOpen.setWindowTitle(QCoreApplication.translate("ViewOpen", u"Dialog", None))
-        self.btOpen.setText(QCoreApplication.translate("ViewOpen", u"Open", None))
         self.btCancel.setText(QCoreApplication.translate("ViewOpen", u"Cancel", None))
     # retranslateUi
 

@@ -13,61 +13,27 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QListWidget" name="listFiles">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>871</width>
-     <height>561</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btOpen">
-   <property name="geometry">
-    <rect>
-     <x>910</x>
-     <y>40</y>
-     <width>101</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Open</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btCancel">
-   <property name="geometry">
-    <rect>
-     <x>910</x>
-     <y>120</y>
-     <width>101</width>
-     <height>71</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Cancel</string>
-   </property>
-  </widget>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QListWidget" name="listFiles"/>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btCancel">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections>
-  <connection>
-   <sender>btOpen</sender>
-   <signal>pressed()</signal>
-   <receiver>ViewOpen</receiver>
-   <slot>returnFile()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>959</x>
-     <y>75</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>927</x>
-     <y>12</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>btCancel</sender>
    <signal>pressed()</signal>
@@ -81,6 +47,22 @@
     <hint type="destinationlabel">
      <x>894</x>
      <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listFiles</sender>
+   <signal>itemClicked()</signal>
+   <receiver>ViewOpen</receiver>
+   <slot>returnFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
     </hint>
    </hints>
   </connection>
