@@ -33,11 +33,14 @@ class WinMain(QWidget):
 		self.jogFeed: int = DEFAULT_FEED
 		self.incDist: float = DEFAULT_INCDIST
 
+		self.gcode: str
+
 	def closeGrblThreads(self):
 		self.grbl.shouldClose = True
 
 	def selectGcodeLine(self, i) -> None:
 		self.viewMain.listGcode.setCurrentRow(i)
+		self.viewMain.gcodeViewer.gcodeIndex = i
 
 	def grblStreamStatusChanged(self, stream: bool) -> None:
 		if stream:
@@ -75,6 +78,9 @@ class WinMain(QWidget):
 		self.viewMain.lbZ.setText("Z%.3f" % (s.z))
 		self.viewMain.lbF.setText("F%.1f" % (s.currentFeed))
 		self.viewMain.lbS.setText("S%.0f" % (s.currentSpeed))
+		self.viewMain.gcodeViewer.curx = s.x
+		self.viewMain.gcodeViewer.cury = s.y
+		self.viewMain.gcodeViewer.repaint()
 
 	def grblStateChanged(self, s: str) -> None:
 		self.viewMain.lbState.setText(s)
@@ -212,14 +218,15 @@ class WinMain(QWidget):
 		ret = self.diagOpen.exec()
 		if ret:
 			with open(self.diagOpen.selectedFile, "r") as f:
-				gcode = ""
+				self.gcode = ""
 				for line in f:
 					l = re.sub("\s|\(.*?\)", "", line)
 					if l != "":
-						gcode += l + "\n"
-				self.grbl.loadNC(gcode)
+						self.gcode += l + "\n"
+				self.grbl.loadNC(self.gcode)
 				self.viewMain.listGcode.clear()
-				self.viewMain.listGcode.addItems(gcode.splitlines())
+				self.viewMain.listGcode.addItems(self.gcode.splitlines())
+				self.viewMain.gcodeViewer.loadGcode(self.gcode)
 
 	def startNC(self):
 		self.grbl.startNC()

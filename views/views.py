@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (QApplication, QGridLayout, QGroupBox, QHBoxLayout
     QSizePolicy, QSpacerItem, QStackedWidget, QVBoxLayout,
     QWidget)
 
-from custom import ConnectComboBox
+from custom import (ConnectComboBox, GcodeViewer)
 
 class ViewMain(object):
     def setupUi(self, ViewMain):
@@ -115,6 +115,12 @@ class ViewMain(object):
         self.listGcode.setObjectName(u"listGcode")
 
         self.horizontalLayout_9.addWidget(self.listGcode)
+
+        self.gcodeViewer = GcodeViewer(self.pageNC)
+        self.gcodeViewer.setObjectName(u"gcodeViewer")
+        self.gcodeViewer.setMinimumSize(QSize(450, 0))
+
+        self.horizontalLayout_9.addWidget(self.gcodeViewer)
 
 
         self.horizontalLayout_10.addLayout(self.horizontalLayout_9)
@@ -430,6 +436,9 @@ class ViewMain(object):
         self.btStart.pressed.connect(ViewMain.startNC)
         self.btUnlock.pressed.connect(ViewMain.unlock)
         self.btJogMode.pressed.connect(ViewMain.switchJogMode)
+
+        self.stackMain.setCurrentIndex(1)
+
 
         QMetaObject.connectSlotsByName(ViewMain)
     # setupUi
