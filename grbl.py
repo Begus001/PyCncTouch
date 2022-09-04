@@ -92,8 +92,10 @@ class GrblInterface(QObject):
 							if not self.checkAlarmAndConnected():
 								self.stopStream()
 								break
-
+							
+							self.mutexSerial.lock()
 							resp = self.serial.readline().decode().strip()
+							self.mutexSerial.unlock()
 
 							if "ok" in resp or "error" in resp:
 								processedIndex += 1
@@ -108,8 +110,10 @@ class GrblInterface(QObject):
 						if not self.checkAlarmAndConnected():
 							self.stopStream()
 							break
-
+						
+						self.mutexSerial.lock()
 						self.serial.write(bytes(line, "utf-8"))
+						self.mutexSerial.unlock()
 					
 					while processedIndex < lineIndex and self.stream:
 
@@ -165,8 +169,11 @@ class GrblInterface(QObject):
 			self.serial.reset_input_buffer()
 			self.keepAlive = True
 		if not c and self.serial.isOpen():
+			self.mutexSerial.lock()
 			time.sleep(.2)
+			self.serial.reset_input_buffer()
 			self.serial.close()
+			self.mutexSerial.unlock()
 
 	def setStream(self, stream: bool) -> None:
 		self.stream = stream

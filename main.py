@@ -52,24 +52,26 @@ class WinMain(QWidget):
 			self.viewMain.btOpen.setEnabled(False)
 			self.viewMain.btUnlock.setEnabled(False)
 		else:
-			self.viewMain.pageJog.setEnabled(True)
-			self.viewMain.btStart.setEnabled(True)
+			if self.grbl.connected:
+				self.viewMain.pageJog.setEnabled(True)
+				self.viewMain.btStart.setEnabled(True)
+				self.viewMain.btUnlock.setEnabled(True)
 			self.viewMain.btOpen.setEnabled(True)
-			self.viewMain.btUnlock.setEnabled(True)
 			self.viewMain.listGcode.setCurrentRow(0)
 			self.viewMain.listGcode.setCurrentRow(-1)
 
 	def grblConnectionChanged(self, c: bool) -> None:
 		if not c:
 			self.viewMain.pageJog.setEnabled(False)
-			self.viewMain.pageConnect.setEnabled(True)
+			self.viewMain.cbPorts.setEnabled(True)
+			self.viewMain.btConnect.setText("Connect")
 			self.viewMain.lbConnected.setText("Disconnected")
-			self.viewMain.cbPorts.clear()
 			self.viewMain.btStart.setEnabled(False)
 			self.viewMain.btUnlock.setEnabled(False)
 		else:
 			self.viewMain.pageJog.setEnabled(True)
-			self.viewMain.pageConnect.setEnabled(False)
+			self.viewMain.cbPorts.setEnabled(False)
+			self.viewMain.btConnect.setText("Disconnect")
 			self.viewMain.lbConnected.setText("Connected")
 			self.viewMain.btStart.setEnabled(True)
 			self.viewMain.btUnlock.setEnabled(True)
@@ -98,7 +100,10 @@ class WinMain(QWidget):
 				self.viewMain.btStart.setEnabled(True)
 
 	def connectPort(self) -> None:
-		self.grbl.connectPort(self.viewMain.cbPorts.currentText())
+		if not self.grbl.connected:
+			self.grbl.connectPort(self.viewMain.cbPorts.currentText())
+		else:
+			self.grbl.setConnected(False)
 
 	def switchPage(self) -> None:
 		self.viewMain.stackMain.setCurrentIndex(QObject.sender(self).property("pageIndex"))
