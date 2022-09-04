@@ -12,12 +12,13 @@ class ConnectComboBox(QComboBox):
 		super().__init__(*args)
 		self.listview = QListView(self)
 		self.listview.setStyleSheet("QListView::item{height: 100px}")
+		self.setFont(QFont(self.font().family(), 20))
 		self.listview.setFont(self.font())
 		self.setView(self.listview)
-		self.scroll = QScrollBar(Qt.Orientation.Vertical, self)
-		self.scroll.setStyleSheet("QScrollBar:vertical{width:50px;}")
-		self.view().setVerticalScrollBar(self.scroll)
-		self.view().setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+		self.scrollbar = QScrollBar(Qt.Orientation.Vertical, self)
+		self.scrollbar.setStyleSheet("QScrollBar:vertical{width:100px;}")
+		self.view().setVerticalScrollBar(self.scrollbar)
+		self.view().setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
 	
 	def showPopup(self) -> None:
 		self.popup.emit()

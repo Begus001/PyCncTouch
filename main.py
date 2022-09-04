@@ -19,6 +19,7 @@ class WinMain(QWidget):
 		self.setWindowFlag(Qt.FramelessWindowHint)
 		self.viewMain = ViewMain()
 		self.viewMain.setupUi(self)
+		self.grblConnectionChanged(False)
 
 		self.grbl = GrblInterface(DEFAULT_FEED, DEFAULT_INCDIST, GRBL_UPDATE_INTERVAL_MS)
 		self.grbl.connectionChanged.connect(self.grblConnectionChanged)
@@ -34,6 +35,8 @@ class WinMain(QWidget):
 		self.incDist: float = DEFAULT_INCDIST
 
 		self.gcode: str
+
+		self.fillDevices()
 
 	def closeGrblThreads(self):
 		self.grbl.shouldClose = True
@@ -59,15 +62,17 @@ class WinMain(QWidget):
 	def grblConnectionChanged(self, c: bool) -> None:
 		if not c:
 			self.viewMain.pageJog.setEnabled(False)
-			self.viewMain.pageNC.setEnabled(False)
 			self.viewMain.pageConnect.setEnabled(True)
 			self.viewMain.lbConnected.setText("Disconnected")
 			self.viewMain.cbPorts.clear()
+			self.viewMain.btStart.setEnabled(False)
+			self.viewMain.btUnlock.setEnabled(False)
 		else:
 			self.viewMain.pageJog.setEnabled(True)
-			self.viewMain.pageNC.setEnabled(True)
 			self.viewMain.pageConnect.setEnabled(False)
 			self.viewMain.lbConnected.setText("Connected")
+			self.viewMain.btStart.setEnabled(True)
+			self.viewMain.btUnlock.setEnabled(True)
 
 	def grblStatusUpdate(self, s: GrblStatus) -> None:
 		self.viewMain.btSetX.setText("%.3f" % (s.x))
@@ -88,8 +93,8 @@ class WinMain(QWidget):
 			self.viewMain.pageJog.setEnabled(False)
 			self.viewMain.btStart.setEnabled(False)
 		else:
-			self.viewMain.pageJog.setEnabled(True)
 			if not self.grbl.stream:
+				self.viewMain.pageJog.setEnabled(True)
 				self.viewMain.btStart.setEnabled(True)
 
 	def connectPort(self) -> None:
@@ -279,12 +284,22 @@ class DiagOpen(QDialog):
 		self.currentDir: str = NC_DIR
 		self.selectedFile: str
 
+		self.scrollbar = QScrollBar(Qt.Orientation.Vertical, self.viewOpen.listFiles)
+		self.scrollbar.setStyleSheet("QScrollBar:vertical{width:100px;}")
+		self.viewOpen.listFiles.setVerticalScrollBar(self.scrollbar)
+		self.viewOpen.listFiles.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+
 		self.listdir()
 
 	def listdir(self) -> None:
 		self.viewOpen.listFiles.clear()
+
 		if self.currentDir != "/":
-			self.viewOpen.listFiles.addItem(QListWidgetItem(QIcon.fromTheme("folder"), ".."))
+			item = QListWidgetItem(QIcon.fromTheme("folder"), "..")
+			item.setSizeHint(QSize(0, 60))
+			item.setFont(QFont(self.font().family(), 20))
+			self.viewOpen.listFiles.addItem(item)
+
 		for name in sorted(os.listdir(self.currentDir)):
 			if os.path.isdir(os.path.join(self.currentDir, name)):
 				item = QListWidgetItem(QIcon.fromTheme("folder"), name)
