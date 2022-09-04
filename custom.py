@@ -31,8 +31,8 @@ class GcodeViewer(QWidget):
 
 		self.gcode: str = ""
 		self.gcodeIndex: int = 0
-		self.gcodePath: list[QLine] = []
-		self.gcodeDonePath: list[QLine] = []
+		self.gcodePath: list[tuple[tuple[float]]] = []
+		self.gcodeDonePath: list[tuple[tuple[float]]] = []
 
 		self.xmax: float = 10
 		self.xmin: float = -10
@@ -106,7 +106,7 @@ class GcodeViewer(QWidget):
 	def renderGcode(self, once: bool = False) -> None:
 		while not self.shouldClose:
 			if not once:
-				time.sleep(0.1)
+				time.sleep(0.25)
 			
 			self.gcodeMutex.lock()
 			self.gcodePath.clear()
@@ -137,9 +137,9 @@ class GcodeViewer(QWidget):
 				
 				if px != x or py != y:
 					if done:
-						self.gcodeDonePath.append(QLine(self.cvtX(px), self.cvtY(py), self.cvtX(x), self.cvtY(y)))
+						self.gcodeDonePath.append(((px, py), (x, y)))
 					else:
-						self.gcodePath.append(QLine(self.cvtX(px), self.cvtY(py), self.cvtX(x), self.cvtY(y)))
+						self.gcodePath.append(((px, py), (x, y)))
 				px = x
 				py = y
 			
@@ -152,10 +152,15 @@ class GcodeViewer(QWidget):
 		p.fillRect(0, 0, self.width(), self.height(), Qt.white)
 		
 		self.gcodeMutex.lock()
+
 		p.setPen(QPen(Qt.black, 2))
-		p.drawLines(self.gcodePath)
+		for line in self.gcodePath:
+			p.drawLine(self.cvtX(line[0][0]), self.cvtY(line[0][1]), self.cvtX(line[1][0]), self.cvtY(line[1][1]))
+
 		p.setPen(QPen(Qt.lightGray, 1))
-		p.drawLines(self.gcodeDonePath)
+		for line in self.gcodeDonePath:
+			p.drawLine(self.cvtX(line[0][0]), self.cvtY(line[0][1]), self.cvtX(line[1][0]), self.cvtY(line[1][1]))
+
 		self.gcodeMutex.unlock()
 			
 		p.setPen(QPen(Qt.red, 3))
@@ -190,7 +195,7 @@ class GcodeViewer(QWidget):
 			self.gcodeMutex.unlock()
 
 			self.mousePos = curMousePos
-			time.sleep(0.1)
+			time.sleep(0.04)
 			self.update()
 
 	def mouseReleaseEvent(self, e: QMouseEvent) -> None:
