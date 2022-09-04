@@ -437,7 +437,7 @@ class ViewMain(object):
         self.btUnlock.pressed.connect(ViewMain.unlock)
         self.btJogMode.pressed.connect(ViewMain.switchJogMode)
 
-        self.stackMain.setCurrentIndex(1)
+        self.stackMain.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(ViewMain)

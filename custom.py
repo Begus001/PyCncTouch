@@ -2,6 +2,9 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 
+import threading
+import time
+
 
 class ConnectComboBox(QComboBox):
 	popup = Signal()
@@ -24,22 +27,31 @@ class ConnectComboBox(QComboBox):
 class GcodeViewer(QWidget):
 	def __init__(self, *args):
 		super().__init__(*args)
+
 		self.gcode: str = ""
 		self.gcodeIndex: int = 0
-		self.xmax: float
-		self.xmin: float
-		self.ymax: float
-		self.ymin: float
-		self.scale: float
+		self.gcodePath: list[QLine] = []
+		self.gcodeDonePath: list[QLine] = []
+
+		self.xmax: float = 10
+		self.xmin: float = -10
+		self.ymax: float = 10
+		self.ymin: float = -10
 
 		self.curx: float = None
 		self.cury: float = None
+
+		self.shouldClose: bool = False
+
+		self.gcodeMutex = QMutex()
+		self.updateThread = threading.Thread(target=self.renderGcode)
+		self.updateThread.start()
 
 	def loadGcode(self, gcode: str) -> None:
 		self.gcode = gcode
 		self.gcodeIndex = 0
 		self.analyzeLimits()
-		self.repaint()
+		self.update()
 
 	def analyzeLimits(self) -> None:
 		self.xmax = -1e16
@@ -91,16 +103,21 @@ class GcodeViewer(QWidget):
 
 	def cvtY(self, y: float) -> int:
 		return int(self.height() - (((y - self.ymin) / (self.ymax - self.ymin)) * self.height()))
-	
-	def paintEvent(self, e: QPaintEvent) -> None:
-		p = QPainter(self)
-		p.fillRect(0, 0, self.width(), self.height(), Qt.white)
-		try:
+
+	def renderGcode(self) -> None:
+		while not self.shouldClose:
+			time.sleep(0.1)
+			self.gcodeMutex.lock()
+			
+			self.gcodePath.clear()
+			self.gcodeDonePath.clear()
+
 			x = 0
 			y = 0
 			px = 0
 			py = 0
 			draw = False
+			done = True
 			for i, line in enumerate(self.gcode.splitlines()):
 				if "G1" in line or "G2" in line or "G3" in line: draw = True
 				elif "G0" in line : draw = False
@@ -109,8 +126,7 @@ class GcodeViewer(QWidget):
 
 				if "X" not in line and "Y" not in line: continue
 
-				if i < self.gcodeIndex: p.setPen(QPen(Qt.lightGray, 1))
-				else: p.setPen(QPen(Qt.black, 2))
+				if i >= self.gcodeIndex: done = False
 
 				tmp = self.gcodeGetVal(line, "X")
 				if tmp != 1e16:
@@ -120,9 +136,26 @@ class GcodeViewer(QWidget):
 					y = tmp
 				
 				if px != x or py != y:
-					p.drawLine(self.cvtX(px), self.cvtY(py), self.cvtX(x), self.cvtY(y))
+					if done:
+						self.gcodeDonePath.append(QLine(self.cvtX(px), self.cvtY(py), self.cvtX(x), self.cvtY(y)))
+					else:
+						self.gcodePath.append(QLine(self.cvtX(px), self.cvtY(py), self.cvtX(x), self.cvtY(y)))
 				px = x
 				py = y
+			
+			self.gcodeMutex.unlock()
+	
+	def paintEvent(self, e: QPaintEvent) -> None:
+		p = QPainter(self)
+		try:
+			p.fillRect(0, 0, self.width(), self.height(), Qt.white)
+			
+			self.gcodeMutex.lock()
+			p.setPen(QPen(Qt.black, 2))
+			p.drawLines(self.gcodePath)
+			p.setPen(QPen(Qt.lightGray, 1))
+			p.drawLines(self.gcodeDonePath)
+			self.gcodeMutex.unlock()
 				
 			p.setPen(QPen(Qt.red, 3))
 			if self.curx != None and self.cury != None and self.gcode != "":

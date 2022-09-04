@@ -80,7 +80,7 @@ class WinMain(QWidget):
 		self.viewMain.lbS.setText("S%.0f" % (s.currentSpeed))
 		self.viewMain.gcodeViewer.curx = s.x
 		self.viewMain.gcodeViewer.cury = s.y
-		self.viewMain.gcodeViewer.repaint()
+		self.viewMain.gcodeViewer.update()
 
 	def grblStateChanged(self, s: str) -> None:
 		self.viewMain.lbState.setText(s)
@@ -353,12 +353,13 @@ class DiagSetAxis(QDialog):
 app = QApplication()
 m = WinMain()
 
-# for screen in app.screens():
-# 	if screen.geometry().width() == 1024:
-# 		m.move(screen.geometry().x(), screen.geometry().y())
+for screen in app.screens():
+	if screen.geometry().width() == 1024:
+		m.move(screen.geometry().x(), screen.geometry().y())
 
 m.show()
 import signal
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 app.exec()
 m.grbl.shouldClose = True
+m.viewMain.gcodeViewer.shouldClose = True

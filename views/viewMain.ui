@@ -89,7 +89,7 @@
    <item>
     <widget class="QStackedWidget" name="stackMain">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="pageConnect">
       <layout class="QHBoxLayout" name="horizontalLayout">
