@@ -86,44 +86,78 @@ class ViewMain(object):
         self.pageNC.setObjectName(u"pageNC")
         self.horizontalLayout_10 = QHBoxLayout(self.pageNC)
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.horizontalLayout_9 = QHBoxLayout()
-        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
         self.verticalLayout_4 = QVBoxLayout()
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.btOpen = QPushButton(self.pageNC)
         self.btOpen.setObjectName(u"btOpen")
+        sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.btOpen.sizePolicy().hasHeightForWidth())
+        self.btOpen.setSizePolicy(sizePolicy)
         self.btOpen.setMinimumSize(QSize(100, 50))
 
         self.verticalLayout_4.addWidget(self.btOpen)
 
         self.btStart = QPushButton(self.pageNC)
         self.btStart.setObjectName(u"btStart")
+        sizePolicy.setHeightForWidth(self.btStart.sizePolicy().hasHeightForWidth())
+        self.btStart.setSizePolicy(sizePolicy)
         self.btStart.setMinimumSize(QSize(100, 50))
 
         self.verticalLayout_4.addWidget(self.btStart)
 
         self.btUnlock = QPushButton(self.pageNC)
         self.btUnlock.setObjectName(u"btUnlock")
+        sizePolicy.setHeightForWidth(self.btUnlock.sizePolicy().hasHeightForWidth())
+        self.btUnlock.setSizePolicy(sizePolicy)
         self.btUnlock.setMinimumSize(QSize(100, 50))
 
         self.verticalLayout_4.addWidget(self.btUnlock)
 
 
-        self.horizontalLayout_9.addLayout(self.verticalLayout_4)
+        self.horizontalLayout_10.addLayout(self.verticalLayout_4)
 
         self.listGcode = QListWidget(self.pageNC)
         self.listGcode.setObjectName(u"listGcode")
 
-        self.horizontalLayout_9.addWidget(self.listGcode)
+        self.horizontalLayout_10.addWidget(self.listGcode)
 
+        self.verticalLayout_5 = QVBoxLayout()
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.gcodeViewer = GcodeViewer(self.pageNC)
         self.gcodeViewer.setObjectName(u"gcodeViewer")
         self.gcodeViewer.setMinimumSize(QSize(450, 0))
 
-        self.horizontalLayout_9.addWidget(self.gcodeViewer)
+        self.verticalLayout_5.addWidget(self.gcodeViewer)
+
+        self.horizontalLayout_9 = QHBoxLayout()
+        self.horizontalLayout_9.setSpacing(0)
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.btZoomOut = QPushButton(self.pageNC)
+        self.btZoomOut.setObjectName(u"btZoomOut")
+        self.btZoomOut.setMinimumSize(QSize(0, 50))
+
+        self.horizontalLayout_9.addWidget(self.btZoomOut)
+
+        self.btZoomToFit = QPushButton(self.pageNC)
+        self.btZoomToFit.setObjectName(u"btZoomToFit")
+        self.btZoomToFit.setMinimumSize(QSize(0, 50))
+
+        self.horizontalLayout_9.addWidget(self.btZoomToFit)
+
+        self.btZoomIn = QPushButton(self.pageNC)
+        self.btZoomIn.setObjectName(u"btZoomIn")
+        self.btZoomIn.setMinimumSize(QSize(0, 50))
+
+        self.horizontalLayout_9.addWidget(self.btZoomIn)
 
 
-        self.horizontalLayout_10.addLayout(self.horizontalLayout_9)
+        self.verticalLayout_5.addLayout(self.horizontalLayout_9)
+
+        self.verticalLayout_5.setStretch(0, 1)
+
+        self.horizontalLayout_10.addLayout(self.verticalLayout_5)
 
         self.stackMain.addWidget(self.pageNC)
         self.pageJog = QWidget()
@@ -148,18 +182,18 @@ class ViewMain(object):
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.btGotoZeroX = QPushButton(self.groupBox_2)
         self.btGotoZeroX.setObjectName(u"btGotoZeroX")
-        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btGotoZeroX.sizePolicy().hasHeightForWidth())
-        self.btGotoZeroX.setSizePolicy(sizePolicy)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.btGotoZeroX.sizePolicy().hasHeightForWidth())
+        self.btGotoZeroX.setSizePolicy(sizePolicy1)
 
         self.horizontalLayout_6.addWidget(self.btGotoZeroX)
 
         self.btGotoZeroY = QPushButton(self.groupBox_2)
         self.btGotoZeroY.setObjectName(u"btGotoZeroY")
-        sizePolicy.setHeightForWidth(self.btGotoZeroY.sizePolicy().hasHeightForWidth())
-        self.btGotoZeroY.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btGotoZeroY.sizePolicy().hasHeightForWidth())
+        self.btGotoZeroY.setSizePolicy(sizePolicy1)
 
         self.horizontalLayout_6.addWidget(self.btGotoZeroY)
 
@@ -168,57 +202,57 @@ class ViewMain(object):
 
         self.btJogXNYP = QPushButton(self.groupBox_2)
         self.btJogXNYP.setObjectName(u"btJogXNYP")
-        sizePolicy.setHeightForWidth(self.btJogXNYP.sizePolicy().hasHeightForWidth())
-        self.btJogXNYP.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btJogXNYP.sizePolicy().hasHeightForWidth())
+        self.btJogXNYP.setSizePolicy(sizePolicy1)
 
         self.gridLayout.addWidget(self.btJogXNYP, 0, 0, 1, 1)
 
         self.btJogXNYN = QPushButton(self.groupBox_2)
         self.btJogXNYN.setObjectName(u"btJogXNYN")
-        sizePolicy.setHeightForWidth(self.btJogXNYN.sizePolicy().hasHeightForWidth())
-        self.btJogXNYN.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btJogXNYN.sizePolicy().hasHeightForWidth())
+        self.btJogXNYN.setSizePolicy(sizePolicy1)
 
         self.gridLayout.addWidget(self.btJogXNYN, 2, 0, 1, 1)
 
         self.btJogYN = QPushButton(self.groupBox_2)
         self.btJogYN.setObjectName(u"btJogYN")
-        sizePolicy.setHeightForWidth(self.btJogYN.sizePolicy().hasHeightForWidth())
-        self.btJogYN.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btJogYN.sizePolicy().hasHeightForWidth())
+        self.btJogYN.setSizePolicy(sizePolicy1)
 
         self.gridLayout.addWidget(self.btJogYN, 2, 1, 1, 1)
 
         self.btJogXPYN = QPushButton(self.groupBox_2)
         self.btJogXPYN.setObjectName(u"btJogXPYN")
-        sizePolicy.setHeightForWidth(self.btJogXPYN.sizePolicy().hasHeightForWidth())
-        self.btJogXPYN.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btJogXPYN.sizePolicy().hasHeightForWidth())
+        self.btJogXPYN.setSizePolicy(sizePolicy1)
 
         self.gridLayout.addWidget(self.btJogXPYN, 2, 2, 1, 1)
 
         self.btJogXP = QPushButton(self.groupBox_2)
         self.btJogXP.setObjectName(u"btJogXP")
-        sizePolicy.setHeightForWidth(self.btJogXP.sizePolicy().hasHeightForWidth())
-        self.btJogXP.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btJogXP.sizePolicy().hasHeightForWidth())
+        self.btJogXP.setSizePolicy(sizePolicy1)
 
         self.gridLayout.addWidget(self.btJogXP, 1, 2, 1, 1)
 
         self.btJogXPYP = QPushButton(self.groupBox_2)
         self.btJogXPYP.setObjectName(u"btJogXPYP")
-        sizePolicy.setHeightForWidth(self.btJogXPYP.sizePolicy().hasHeightForWidth())
-        self.btJogXPYP.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btJogXPYP.sizePolicy().hasHeightForWidth())
+        self.btJogXPYP.setSizePolicy(sizePolicy1)
 
         self.gridLayout.addWidget(self.btJogXPYP, 0, 2, 1, 1)
 
         self.btJogYP = QPushButton(self.groupBox_2)
         self.btJogYP.setObjectName(u"btJogYP")
-        sizePolicy.setHeightForWidth(self.btJogYP.sizePolicy().hasHeightForWidth())
-        self.btJogYP.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btJogYP.sizePolicy().hasHeightForWidth())
+        self.btJogYP.setSizePolicy(sizePolicy1)
 
         self.gridLayout.addWidget(self.btJogYP, 0, 1, 1, 1)
 
         self.btJogXN = QPushButton(self.groupBox_2)
         self.btJogXN.setObjectName(u"btJogXN")
-        sizePolicy.setHeightForWidth(self.btJogXN.sizePolicy().hasHeightForWidth())
-        self.btJogXN.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btJogXN.sizePolicy().hasHeightForWidth())
+        self.btJogXN.setSizePolicy(sizePolicy1)
 
         self.gridLayout.addWidget(self.btJogXN, 1, 0, 1, 1)
 
@@ -230,22 +264,22 @@ class ViewMain(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.btJogZP = QPushButton(self.groupBox_2)
         self.btJogZP.setObjectName(u"btJogZP")
-        sizePolicy.setHeightForWidth(self.btJogZP.sizePolicy().hasHeightForWidth())
-        self.btJogZP.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btJogZP.sizePolicy().hasHeightForWidth())
+        self.btJogZP.setSizePolicy(sizePolicy1)
 
         self.verticalLayout.addWidget(self.btJogZP)
 
         self.btGotoZeroZ = QPushButton(self.groupBox_2)
         self.btGotoZeroZ.setObjectName(u"btGotoZeroZ")
-        sizePolicy.setHeightForWidth(self.btGotoZeroZ.sizePolicy().hasHeightForWidth())
-        self.btGotoZeroZ.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btGotoZeroZ.sizePolicy().hasHeightForWidth())
+        self.btGotoZeroZ.setSizePolicy(sizePolicy1)
 
         self.verticalLayout.addWidget(self.btGotoZeroZ)
 
         self.btJogZN = QPushButton(self.groupBox_2)
         self.btJogZN.setObjectName(u"btJogZN")
-        sizePolicy.setHeightForWidth(self.btJogZN.sizePolicy().hasHeightForWidth())
-        self.btJogZN.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btJogZN.sizePolicy().hasHeightForWidth())
+        self.btJogZN.setSizePolicy(sizePolicy1)
 
         self.verticalLayout.addWidget(self.btJogZN)
 
@@ -268,8 +302,8 @@ class ViewMain(object):
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.label = QLabel(self.groupBox)
         self.label.setObjectName(u"label")
-        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy1)
         font2 = QFont()
         font2.setPointSize(20)
         self.label.setFont(font2)
@@ -279,15 +313,15 @@ class ViewMain(object):
 
         self.btSetX = QPushButton(self.groupBox)
         self.btSetX.setObjectName(u"btSetX")
-        sizePolicy.setHeightForWidth(self.btSetX.sizePolicy().hasHeightForWidth())
-        self.btSetX.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btSetX.sizePolicy().hasHeightForWidth())
+        self.btSetX.setSizePolicy(sizePolicy1)
 
         self.verticalLayout_2.addWidget(self.btSetX)
 
         self.label_2 = QLabel(self.groupBox)
         self.label_2.setObjectName(u"label_2")
-        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
-        self.label_2.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy1)
         self.label_2.setFont(font2)
         self.label_2.setAlignment(Qt.AlignBottom|Qt.AlignHCenter)
 
@@ -295,15 +329,15 @@ class ViewMain(object):
 
         self.btSetY = QPushButton(self.groupBox)
         self.btSetY.setObjectName(u"btSetY")
-        sizePolicy.setHeightForWidth(self.btSetY.sizePolicy().hasHeightForWidth())
-        self.btSetY.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btSetY.sizePolicy().hasHeightForWidth())
+        self.btSetY.setSizePolicy(sizePolicy1)
 
         self.verticalLayout_2.addWidget(self.btSetY)
 
         self.label_3 = QLabel(self.groupBox)
         self.label_3.setObjectName(u"label_3")
-        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy1)
         self.label_3.setFont(font2)
         self.label_3.setAlignment(Qt.AlignBottom|Qt.AlignHCenter)
 
@@ -311,8 +345,8 @@ class ViewMain(object):
 
         self.btSetZ = QPushButton(self.groupBox)
         self.btSetZ.setObjectName(u"btSetZ")
-        sizePolicy.setHeightForWidth(self.btSetZ.sizePolicy().hasHeightForWidth())
-        self.btSetZ.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btSetZ.sizePolicy().hasHeightForWidth())
+        self.btSetZ.setSizePolicy(sizePolicy1)
 
         self.verticalLayout_2.addWidget(self.btSetZ)
 
@@ -322,15 +356,15 @@ class ViewMain(object):
 
         self.btJogMode = QPushButton(self.groupBox)
         self.btJogMode.setObjectName(u"btJogMode")
-        sizePolicy.setHeightForWidth(self.btJogMode.sizePolicy().hasHeightForWidth())
-        self.btJogMode.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btJogMode.sizePolicy().hasHeightForWidth())
+        self.btJogMode.setSizePolicy(sizePolicy1)
 
         self.verticalLayout_2.addWidget(self.btJogMode)
 
         self.btFeed = QPushButton(self.groupBox)
         self.btFeed.setObjectName(u"btFeed")
-        sizePolicy.setHeightForWidth(self.btFeed.sizePolicy().hasHeightForWidth())
-        self.btFeed.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.btFeed.sizePolicy().hasHeightForWidth())
+        self.btFeed.setSizePolicy(sizePolicy1)
 
         self.verticalLayout_2.addWidget(self.btFeed)
 
@@ -436,6 +470,9 @@ class ViewMain(object):
         self.btStart.pressed.connect(ViewMain.startNC)
         self.btUnlock.pressed.connect(ViewMain.unlock)
         self.btJogMode.pressed.connect(ViewMain.switchJogMode)
+        self.btZoomIn.pressed.connect(ViewMain.zoomIn)
+        self.btZoomOut.pressed.connect(ViewMain.zoomOut)
+        self.btZoomToFit.pressed.connect(ViewMain.zoomToFit)
 
         self.stackMain.setCurrentIndex(0)
 
@@ -453,6 +490,9 @@ class ViewMain(object):
         self.btOpen.setText(QCoreApplication.translate("ViewMain", u"Open", None))
         self.btStart.setText(QCoreApplication.translate("ViewMain", u"Start", None))
         self.btUnlock.setText(QCoreApplication.translate("ViewMain", u"Unlock", None))
+        self.btZoomOut.setText(QCoreApplication.translate("ViewMain", u"-", None))
+        self.btZoomToFit.setText(QCoreApplication.translate("ViewMain", u"Fit", None))
+        self.btZoomIn.setText(QCoreApplication.translate("ViewMain", u"+", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("ViewMain", u"Jog", None))
         self.btGotoZeroX.setText(QCoreApplication.translate("ViewMain", u"X0", None))
         self.btGotoZeroY.setText(QCoreApplication.translate("ViewMain", u"Y0", None))

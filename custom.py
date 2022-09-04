@@ -37,8 +37,8 @@ class GcodeViewer(QWidget):
 		self.xmin: float = -10
 		self.ymax: float = 10
 		self.ymin: float = -10
-		self.scaleX: float = (self.xmax - self.xmin) / self.width()
-		self.scaleY: float = (self.ymax - self.ymin) / self.height()
+		self.scaleX: float
+		self.scaleY: float
 
 		self.curx: float = None
 		self.cury: float = None
@@ -54,10 +54,9 @@ class GcodeViewer(QWidget):
 		self.gcode = gcode
 		self.gcodeIndex = 0
 		self.analyzeLimits()
-		self.renderGcode(True)
-		self.update()
 
 	def analyzeLimits(self) -> None:
+		if self.gcode == "": return
 		self.xmax = -1e16
 		self.xmin = 1e16
 		self.ymax = -1e16
@@ -82,6 +81,9 @@ class GcodeViewer(QWidget):
 
 		self.scaleX = (self.xmax - self.xmin) / self.width()
 		self.scaleY = (self.ymax - self.ymin) / self.height()
+
+		self.renderGcode(True)
+		self.update()
 
 	def gcodeGetVal(self, line: str, val: str) -> float:
 		if val in line:
@@ -145,24 +147,25 @@ class GcodeViewer(QWidget):
 	
 	def paintEvent(self, e: QPaintEvent) -> None:
 		p = QPainter(self)
-		try:
-			p.fillRect(0, 0, self.width(), self.height(), Qt.white)
+
+		p.fillRect(0, 0, self.width(), self.height(), Qt.white)
+		
+		self.gcodeMutex.lock()
+		p.setPen(QPen(Qt.black, 2))
+		p.drawLines(self.gcodePath)
+		p.setPen(QPen(Qt.lightGray, 1))
+		p.drawLines(self.gcodeDonePath)
+		self.gcodeMutex.unlock()
 			
-			self.gcodeMutex.lock()
-			p.setPen(QPen(Qt.black, 2))
-			p.drawLines(self.gcodePath)
-			p.setPen(QPen(Qt.lightGray, 1))
-			p.drawLines(self.gcodeDonePath)
-			self.gcodeMutex.unlock()
-				
-			p.setPen(QPen(Qt.red, 3))
-			if self.curx != None and self.cury != None and self.gcode != "":
-				p.drawLine(self.cvtX(self.curx) + 10, self.cvtY(self.cury) + 10, self.cvtX(self.curx) - 10, self.cvtY(self.cury) - 10)
-				p.drawLine(self.cvtX(self.curx) + 10, self.cvtY(self.cury) - 10, self.cvtX(self.curx) - 10, self.cvtY(self.cury) + 10)
-		except:
-			print("oh cock")
-		finally:
-			p.end()
+		p.setPen(QPen(Qt.red, 3))
+		if self.curx != None and self.cury != None and self.gcode != "":
+			p.drawLine(self.cvtX(self.curx) + 10, self.cvtY(self.cury) + 10, self.cvtX(self.curx) - 10, self.cvtY(self.cury) - 10)
+			p.drawLine(self.cvtX(self.curx) + 10, self.cvtY(self.cury) - 10, self.cvtX(self.curx) - 10, self.cvtY(self.cury) + 10)
+
+		p.setPen(QPen(Qt.blue, 3))
+		p.drawEllipse(QPoint(self.cvtX(0), self.cvtY(0)), 5, 5)
+
+		p.end()
 
 	def mousePressEvent(self, e: QMouseEvent) -> None:
 		self.mousePos = self.mapFromGlobal(QCursor.pos())
@@ -170,6 +173,8 @@ class GcodeViewer(QWidget):
 		self.test = threading.Thread(target=self.panLoop).start()
 	
 	def panLoop(self):
+		self.scaleX = (self.xmax - self.xmin) / self.width()
+		self.scaleY = (self.ymax - self.ymin) / self.height()
 		while self.panning:
 			curMousePos = self.mapFromGlobal(QCursor.pos())
 			dx = self.mousePos.x() - curMousePos.x()
@@ -190,3 +195,22 @@ class GcodeViewer(QWidget):
 	def mouseReleaseEvent(self, e: QMouseEvent) -> None:
 		self.panning = False
 
+	def zoomIn(self):
+		self.xmax -= self.xmax * 0.1
+		self.xmin -= self.xmin * 0.1
+		self.ymax -= self.ymax * 0.1
+		self.ymin -= self.ymin * 0.1
+		self.scaleX = (self.xmax - self.xmin) / self.width()
+		self.scaleY = (self.ymax - self.ymin) / self.height()
+		self.renderGcode(True)
+		self.update()
+
+	def zoomOut(self):
+		self.xmax += self.xmax * 0.1
+		self.xmin += self.xmin * 0.1
+		self.ymax += self.ymax * 0.1
+		self.ymin += self.ymin * 0.1
+		self.scaleX = (self.xmax - self.xmin) / self.width()
+		self.scaleY = (self.ymax - self.ymin) / self.height()
+		self.renderGcode(True)
+		self.update()

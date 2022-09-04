@@ -234,6 +234,15 @@ class WinMain(QWidget):
 	def unlock(self):
 		self.grbl.unlock()
 
+	def zoomIn(self):
+		self.viewMain.gcodeViewer.zoomIn()
+
+	def zoomOut(self):
+		self.viewMain.gcodeViewer.zoomOut()
+	
+	def zoomToFit(self):
+		self.viewMain.gcodeViewer.analyzeLimits()
+
 
 class DiagFeed(QDialog):
 	def __init__(self) -> None:
