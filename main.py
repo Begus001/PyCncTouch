@@ -10,7 +10,7 @@ from grbl import *
 GRBL_UPDATE_INTERVAL_MS = 100
 DEFAULT_FEED = 5000
 DEFAULT_INCDIST = 0.01
-NC_DIR = "/home/main/sync/cnc/"
+NC_DIR = os.environ.get("HOME") + "/"
 
 GRBL_CFG_NAMES =	{
 						"0": "Step pulse, microseconds",
