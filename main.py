@@ -2,6 +2,7 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 import os
+from datetime import datetime
 
 from views.views import *
 from grbl import *
@@ -331,14 +332,15 @@ class WinMain(QWidget):
 	
 	def grblMessageReceived(self, msg: str) -> None:
 		if msg != "":
+			now = str(datetime.now().time())
 			if msg.startswith("$"):
 				num = msg[1:msg.index("=")]
 				msg += " (%s)" % (GRBL_CFG_NAMES[num])
-
-			self.viewMain.tbCLIOutput.appendPlainText(msg)
+			self.viewMain.tbCLIOutput.appendPlainText("[%s] %s" % (now, msg))
 	
 	def grblMessageSent(self, msg: str) -> None:
-		self.viewMain.tbCLIOutput.appendPlainText(msg[:-1].upper())
+		now = str(datetime.now().time())
+		self.viewMain.tbCLIOutput.appendPlainText("[%s] %s" % (now, msg[:-1].upper()))
 
 
 class DiagFeed(QDialog):
