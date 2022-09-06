@@ -235,7 +235,12 @@ class CLIInputTextEdit(QPlainTextEdit):
 	def keyPressEvent(self, e: QKeyEvent) -> None:
 		if e.key() in (Qt.Key_Return, Qt.Key_Enter):
 			self.historyIndex = -1
-			self.history.insert(0, self.toPlainText())
+			
+			if len(self.history) == 0:
+				self.history.insert(0, self.toPlainText())
+			elif self.history[0] != self.toPlainText():
+				self.history.insert(0, self.toPlainText())
+
 			self.sendCommand.emit(self.toPlainText() + "\n")
 			self.setPlainText("")
 		elif e.key() == Qt.Key_Up:
