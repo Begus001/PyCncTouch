@@ -149,7 +149,7 @@ class GcodeViewer(QWidget):
 	def paintEvent(self, e: QPaintEvent) -> None:
 		p = QPainter(self)
 
-		p.fillRect(0, 0, self.width(), self.height(), Qt.white)
+		p.fillRect(0, 0, self.width(), self.height(), QColor("#ddd"))
 		
 		self.gcodeMutex.lock()
 

@@ -397,26 +397,49 @@ class ViewMain(object):
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.lbX = QLabel(ViewMain)
         self.lbX.setObjectName(u"lbX")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.lbX.sizePolicy().hasHeightForWidth())
+        self.lbX.setSizePolicy(sizePolicy2)
+        self.lbX.setMinimumSize(QSize(100, 0))
+        self.lbX.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_4.addWidget(self.lbX)
 
         self.lbY = QLabel(ViewMain)
         self.lbY.setObjectName(u"lbY")
+        sizePolicy2.setHeightForWidth(self.lbY.sizePolicy().hasHeightForWidth())
+        self.lbY.setSizePolicy(sizePolicy2)
+        self.lbY.setMinimumSize(QSize(100, 0))
+        self.lbY.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_4.addWidget(self.lbY)
 
         self.lbZ = QLabel(ViewMain)
         self.lbZ.setObjectName(u"lbZ")
+        sizePolicy2.setHeightForWidth(self.lbZ.sizePolicy().hasHeightForWidth())
+        self.lbZ.setSizePolicy(sizePolicy2)
+        self.lbZ.setMinimumSize(QSize(100, 0))
+        self.lbZ.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_4.addWidget(self.lbZ)
 
         self.lbF = QLabel(ViewMain)
         self.lbF.setObjectName(u"lbF")
+        sizePolicy2.setHeightForWidth(self.lbF.sizePolicy().hasHeightForWidth())
+        self.lbF.setSizePolicy(sizePolicy2)
+        self.lbF.setMinimumSize(QSize(100, 0))
+        self.lbF.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_4.addWidget(self.lbF)
 
         self.lbS = QLabel(ViewMain)
         self.lbS.setObjectName(u"lbS")
+        sizePolicy2.setHeightForWidth(self.lbS.sizePolicy().hasHeightForWidth())
+        self.lbS.setSizePolicy(sizePolicy2)
+        self.lbS.setMinimumSize(QSize(100, 0))
+        self.lbS.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_4.addWidget(self.lbS)
 
@@ -425,7 +448,7 @@ class ViewMain(object):
 
         self.lbState = QLabel(ViewMain)
         self.lbState.setObjectName(u"lbState")
-        self.lbState.setAlignment(Qt.AlignCenter)
+        self.lbState.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_8.addWidget(self.lbState)
 

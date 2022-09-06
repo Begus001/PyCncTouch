@@ -21,6 +21,11 @@ class WinMain(QWidget):
 		self.viewMain.setupUi(self)
 		self.grblConnectionChanged(False)
 
+		with open("style.qss") as f:
+			self.style = f.read()
+
+		self.setStyleSheet(self.style)
+
 		self.grbl = GrblInterface(DEFAULT_FEED, DEFAULT_INCDIST, GRBL_UPDATE_INTERVAL_MS)
 		self.grbl.connectionChanged.connect(self.grblConnectionChanged)
 		self.grbl.statusUpdate.connect(self.grblStatusUpdate)
@@ -110,12 +115,12 @@ class WinMain(QWidget):
 
 	def setFeed(self) -> None:
 		if self.jogMode:
-			diagFeed = DiagFeed()
+			diagFeed = DiagFeed(self.style)
 			self.jogFeed = diagFeed.exec()
 			self.viewMain.btFeed.setText(str(self.jogFeed))
 			self.grbl.jogFeed = self.jogFeed
 		else:
-			diagDistance = DiagDistance()
+			diagDistance = DiagDistance(self.style)
 			diagDistance.exec()
 			self.incDist = diagDistance.selectedDistance
 			self.viewMain.btFeed.setText(str(self.incDist))
@@ -224,7 +229,7 @@ class WinMain(QWidget):
 				self.viewMain.cbPorts.addItem("/dev/" + i)
 
 	def openNC(self):
-		self.diagOpen = DiagOpen()
+		self.diagOpen = DiagOpen(self.style)
 		ret = self.diagOpen.exec()
 		if ret:
 			with open(self.diagOpen.selectedFile, "r") as f:
@@ -255,11 +260,12 @@ class WinMain(QWidget):
 
 
 class DiagFeed(QDialog):
-	def __init__(self) -> None:
+	def __init__(self, style: str) -> None:
 		super().__init__()
 		self.setWindowFlag(Qt.FramelessWindowHint)
 		self.viewFeed = ViewFeed()
 		self.viewFeed.setupUi(self)
+		self.setStyleSheet(style)
 
 	def returnFeed(self) -> None:
 		feed = int(QObject.sender(self).text())
@@ -267,11 +273,14 @@ class DiagFeed(QDialog):
 
 
 class DiagDistance(QDialog):
-	def __init__(self) -> None:
+	def __init__(self, style: str) -> None:
 		super().__init__()
 		self.setWindowFlag(Qt.FramelessWindowHint)
 		self.viewDistance = ViewDistance()
 		self.viewDistance.setupUi(self)
+
+		self.setStyleSheet(style)
+
 		self.selectedDistance: float
 
 	def returnDistance(self) -> None:
@@ -281,11 +290,14 @@ class DiagDistance(QDialog):
 
 
 class DiagOpen(QDialog):
-	def __init__(self) -> None:
+	def __init__(self, style: str) -> None:
 		super().__init__()
 		self.setWindowFlag(Qt.FramelessWindowHint)
 		self.viewOpen = ViewOpen()
 		self.viewOpen.setupUi(self)
+
+		self.setStyleSheet(style)
+
 		self.currentDir: str = NC_DIR
 		self.selectedFile: str
 

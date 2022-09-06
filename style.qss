@@ -1,0 +1,36 @@
+QPushButton {
+	background-color: #555;
+	color: #eee;
+}
+
+QPushButton:disabled {
+	background-color: #666;
+	color: #aaa;
+}
+
+QLabel {
+	color: #eee;
+}
+
+QGroupBox {
+	color: #eee;
+}
+
+QListWidget {
+	background-color: #555;
+	color: #eee;
+}
+
+[objectName="ViewMain"], [objectName="ViewFeed"], [objectName="ViewDistance"], [objectName="ViewOpen"] {
+	background-color: #444;
+}
+
+QComboBox {
+	background-color: #555;
+	color: #eee;
+}
+
+QComboBox:disabled {
+	background-color: #666;
+	color: #aaa;
+}
