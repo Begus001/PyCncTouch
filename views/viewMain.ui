@@ -84,6 +84,22 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="btPageCLI">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>CLI</string>
+       </property>
+       <property name="pageIndex" stdset="0">
+        <number>3</number>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -626,6 +642,39 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="pageCLI">
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QPlainTextEdit" name="tbCLIOutput">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="CLIInputTextEdit" name="tbCLIInput">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>40</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
@@ -782,6 +831,11 @@
    <extends>QWidget</extends>
    <header>custom</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CLIInputTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>custom</header>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -1407,6 +1461,22 @@
     <hint type="destinationlabel">
      <x>511</x>
      <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btPageCLI</sender>
+   <signal>pressed()</signal>
+   <receiver>ViewMain</receiver>
+   <slot>switchPage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>873</x>
+     <y>48</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>826</x>
+     <y>2</y>
     </hint>
    </hints>
   </connection>

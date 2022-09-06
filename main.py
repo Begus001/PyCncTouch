@@ -33,6 +33,10 @@ class WinMain(QWidget):
 		self.grbl.processedIndexChanged.connect(self.selectGcodeLine)
 		self.grbl.streamStatusChanged.connect(self.grblStreamStatusChanged)
 
+		self.viewMain.tbCLIInput.sendCommand.connect(self.cliCmd)
+		self.grbl.messageReceived.connect(self.grblMessageReceived)
+		self.grbl.messageSent.connect(self.grblMessageSent)
+
 		self.destroyed.connect(self.closeGrblThreads)
 
 		self.jogMode: bool = True
@@ -56,11 +60,13 @@ class WinMain(QWidget):
 			self.viewMain.btStart.setEnabled(False)
 			self.viewMain.btOpen.setEnabled(False)
 			self.viewMain.btUnlock.setEnabled(False)
+			self.viewMain.tbCLIInput.setEnabled(False)
 		else:
 			if self.grbl.connected:
 				self.viewMain.pageJog.setEnabled(True)
 				self.viewMain.btStart.setEnabled(True)
 				self.viewMain.btUnlock.setEnabled(True)
+				self.viewMain.tbCLIInput.setEnabled(True)
 			self.viewMain.btOpen.setEnabled(True)
 			self.viewMain.listGcode.setCurrentRow(0)
 			self.viewMain.listGcode.setCurrentRow(-1)
@@ -73,6 +79,7 @@ class WinMain(QWidget):
 			self.viewMain.lbConnected.setText("Disconnected")
 			self.viewMain.btStart.setEnabled(False)
 			self.viewMain.btUnlock.setEnabled(False)
+			self.viewMain.tbCLIInput.setEnabled(False)
 		else:
 			self.viewMain.pageJog.setEnabled(True)
 			self.viewMain.cbPorts.setEnabled(False)
@@ -80,6 +87,7 @@ class WinMain(QWidget):
 			self.viewMain.lbConnected.setText("Connected")
 			self.viewMain.btStart.setEnabled(True)
 			self.viewMain.btUnlock.setEnabled(True)
+			self.viewMain.tbCLIInput.setEnabled(True)
 
 	def grblStatusUpdate(self, s: GrblStatus) -> None:
 		self.viewMain.btSetX.setText("%.3f" % (s.x))
@@ -111,7 +119,10 @@ class WinMain(QWidget):
 			self.grbl.setConnected(False)
 
 	def switchPage(self) -> None:
-		self.viewMain.stackMain.setCurrentIndex(QObject.sender(self).property("pageIndex"))
+		index = QObject.sender(self).property("pageIndex")
+		self.viewMain.stackMain.setCurrentIndex(index)
+		self.viewMain.tbCLIOutput.verticalScrollBar().setValue(self.viewMain.tbCLIOutput.verticalScrollBar().maximum())
+
 
 	def setFeed(self) -> None:
 		if self.jogMode:
@@ -228,7 +239,7 @@ class WinMain(QWidget):
 			if "ttyUSB" in i or "ttyACM" in i:
 				self.viewMain.cbPorts.addItem("/dev/" + i)
 
-	def openNC(self):
+	def openNC(self) -> None:
 		self.diagOpen = DiagOpen(self.style)
 		ret = self.diagOpen.exec()
 		if ret:
@@ -243,20 +254,30 @@ class WinMain(QWidget):
 				self.viewMain.listGcode.addItems(self.gcode.splitlines())
 				self.viewMain.gcodeViewer.loadGcode(self.gcode)
 
-	def startNC(self):
+	def startNC(self) -> None:
 		self.grbl.startNC()
 
-	def unlock(self):
+	def unlock(self) -> None:
 		self.grbl.unlock()
 
-	def zoomIn(self):
+	def zoomIn(self) -> None:
 		self.viewMain.gcodeViewer.zoomIn()
 
-	def zoomOut(self):
+	def zoomOut(self) -> None:
 		self.viewMain.gcodeViewer.zoomOut()
 	
-	def zoomToFit(self):
+	def zoomToFit(self) -> None:
 		self.viewMain.gcodeViewer.analyzeLimits()
+
+	def cliCmd(self, cmd: str) -> None:
+		self.grbl.sendCmd(cmd.encode())
+	
+	def grblMessageReceived(self, msg: str) -> None:
+		if msg != "":
+			self.viewMain.tbCLIOutput.appendPlainText(msg)
+	
+	def grblMessageSent(self, msg: str) -> None:
+		self.viewMain.tbCLIOutput.appendPlainText(msg[:-1].upper())
 
 
 class DiagFeed(QDialog):
@@ -323,7 +344,7 @@ class DiagOpen(QDialog):
 			elif name.endswith(".nc"):
 				item = QListWidgetItem(QIcon.fromTheme("document"), name)
 			else: continue
-			
+
 			item.setSizeHint(QSize(0, 60))
 			item.setFont(QFont(self.font().family(), 20))
 			self.viewOpen.listFiles.addItem(item)

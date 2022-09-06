@@ -149,15 +149,15 @@ class GcodeViewer(QWidget):
 	def paintEvent(self, e: QPaintEvent) -> None:
 		p = QPainter(self)
 
-		p.fillRect(0, 0, self.width(), self.height(), QColor("#ddd"))
+		p.fillRect(0, 0, self.width(), self.height(), QColor("#555"))
 		
 		self.gcodeMutex.lock()
 
-		p.setPen(QPen(Qt.black, 2))
+		p.setPen(QPen(QBrush("#eee"), 2))
 		for line in self.gcodePath:
 			p.drawLine(self.cvtX(line[0][0]), self.cvtY(line[0][1]), self.cvtX(line[1][0]), self.cvtY(line[1][1]))
 
-		p.setPen(QPen(Qt.lightGray, 1))
+		p.setPen(QPen(QBrush("#666"), 1))
 		for line in self.gcodeDonePath:
 			p.drawLine(self.cvtX(line[0][0]), self.cvtY(line[0][1]), self.cvtX(line[1][0]), self.cvtY(line[1][1]))
 
@@ -220,3 +220,36 @@ class GcodeViewer(QWidget):
 		self.scaleY = (self.ymax - self.ymin) / self.height()
 		self.renderGcode(True)
 		self.update()
+
+
+class CLIInputTextEdit(QPlainTextEdit):
+	sendCommand = Signal(str)
+	def __init__(self, *args):
+		super().__init__(*args)
+		self.history: list[str] = []
+		self.historyIndex: int = 0
+
+		self.setFont(QFont("monospace", 16))
+		self.setCursorWidth(13)
+
+	def keyPressEvent(self, e: QKeyEvent) -> None:
+		if e.key() in (Qt.Key_Return, Qt.Key_Enter):
+			self.historyIndex = -1
+			self.history.insert(0, self.toPlainText())
+			self.sendCommand.emit(self.toPlainText() + "\n")
+			self.setPlainText("")
+		elif e.key() == Qt.Key_Up:
+			if self.historyIndex + 1 < len(self.history):
+				self.historyIndex += 1
+				self.setPlainText(self.history[self.historyIndex])
+				self.moveCursor(QTextCursor.End)
+		elif e.key() == Qt.Key_Down:
+			if self.historyIndex - 1 > -1:
+				self.historyIndex -= 1
+				self.setPlainText(self.history[self.historyIndex])
+				self.moveCursor(QTextCursor.End)
+			elif self.historyIndex - 1 == -1:
+				self.historyIndex = -1
+				self.setPlainText("")
+		else:
+			return super().keyPressEvent(e)

@@ -31,6 +31,8 @@ class GrblInterface(QObject):
 	stateChanged = Signal(str)
 	processedIndexChanged = Signal(int)
 	streamStatusChanged = Signal(bool)
+	messageReceived = Signal(str)
+	messageSent = Signal(str)
 
 	def __init__(self, defaultFeed: int, defaultIncDist: float, statusInterval: int):
 		super().__init__()
@@ -72,6 +74,7 @@ class GrblInterface(QObject):
 					if self.serial.inWaiting():
 						resp = self.serial.readline().decode().strip()
 						if "ok" in resp or "error" in resp:
+							self.messageReceived.emit(resp)
 							if len(self.bytesInBuf) > 0:
 								del self.bytesInBuf[0]
 						elif resp.startswith("<"):
@@ -79,6 +82,8 @@ class GrblInterface(QObject):
 							self.state = resp[1:resp.index("|")]
 							self.stateChanged.emit(self.state)
 							self.statusUpdate.emit(GrblStatus(resp))
+						else:
+							self.messageReceived.emit(resp)
 				else:
 					self.processedIndexChanged.emit(0)
 					lineIndex = 0
@@ -101,6 +106,7 @@ class GrblInterface(QObject):
 							if "ok" in resp or "error" in resp:
 								processedIndex += 1
 								self.processedIndexChanged.emit(processedIndex)
+								self.messageReceived.emit(resp)
 								if len(self.bytesInBuf) > 0:
 									del self.bytesInBuf[0]
 							elif "<" in resp:
@@ -110,15 +116,19 @@ class GrblInterface(QObject):
 								self.statusUpdate.emit(GrblStatus(resp))
 							elif "Grbl " in resp:
 								self.keepAlive = True
+								self.messageReceived.emit(resp)
 								self.stopStream()
 								break
+							else:
+								self.messageReceived.emit(resp)
 						
 						if not self.checkAlarmAndConnected():
 							self.stopStream()
 							break
 						
 						self.mutexSerial.lock()
-						self.serial.write(bytes(line, "utf-8"))
+						self.serial.write(line.encode())
+						self.messageSent.emit(line)
 						self.mutexSerial.unlock()
 					
 					while processedIndex < lineIndex and self.stream:
@@ -131,6 +141,7 @@ class GrblInterface(QObject):
 						if "ok" in resp or "error" in resp:
 								processedIndex += 1
 								self.processedIndexChanged.emit(processedIndex)
+								self.messageReceived.emit(resp)
 								if len(self.bytesInBuf) > 0:
 									del self.bytesInBuf[0]
 						elif "<" in resp:
@@ -140,8 +151,11 @@ class GrblInterface(QObject):
 							self.statusUpdate.emit(GrblStatus(resp))
 						elif "Grbl " in resp:
 							self.keepAlive = True
+							self.messageReceived.emit(resp)
 							self.stopStream()
 							break
+						else:
+							self.messageReceived.emit(resp)
 					
 					self.stopStream()
 						
@@ -198,7 +212,9 @@ class GrblInterface(QObject):
 			self.serial.open()
 			self.serial.write(b"\x18")
 			self.serial.flush()
-			self.serial.readline()
+			resp = self.serial.readline().strip().decode()
+			resp = self.serial.readline().strip().decode()
+			self.messageReceived.emit(resp)
 			self.serial.reset_input_buffer()
 			self.setConnected(True)
 		except:
@@ -323,7 +339,9 @@ class GrblInterface(QObject):
 		if not self.connected or self.state != "Idle": return
 		self.serial.write(cmd)
 		self.bytesInBuf.append(len(cmd))
+		self.messageSent.emit(cmd.decode())
 
 	def sendCmd(self, cmd: bytes):
 		self.serial.write(cmd)
 		self.bytesInBuf.append(len(cmd))
+		self.messageSent.emit(cmd.decode())

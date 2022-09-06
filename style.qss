@@ -34,3 +34,8 @@ QComboBox:disabled {
 	background-color: #666;
 	color: #aaa;
 }
+
+QPlainTextEdit {
+	background-color: #555;
+	color: #eee;
+}

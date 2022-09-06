@@ -16,11 +16,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QGridLayout, QGroupBox, QHBoxLayout,
-    QLabel, QListWidget, QListWidgetItem, QPushButton,
-    QSizePolicy, QSpacerItem, QStackedWidget, QVBoxLayout,
-    QWidget)
+    QLabel, QListWidget, QListWidgetItem, QPlainTextEdit,
+    QPushButton, QSizePolicy, QSpacerItem, QStackedWidget,
+    QVBoxLayout, QWidget)
 
-from custom import (ConnectComboBox, GcodeViewer)
+from custom import (CLIInputTextEdit, ConnectComboBox, GcodeViewer)
 
 class ViewMain(object):
     def setupUi(self, ViewMain):
@@ -56,6 +56,13 @@ class ViewMain(object):
         self.btPageJog.setProperty("pageIndex", 2)
 
         self.horizontalLayout_3.addWidget(self.btPageJog)
+
+        self.btPageCLI = QPushButton(ViewMain)
+        self.btPageCLI.setObjectName(u"btPageCLI")
+        self.btPageCLI.setMinimumSize(QSize(0, 100))
+        self.btPageCLI.setProperty("pageIndex", 3)
+
+        self.horizontalLayout_3.addWidget(self.btPageCLI)
 
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_3)
@@ -382,6 +389,29 @@ class ViewMain(object):
         self.horizontalLayout_7.setStretch(0, 5)
         self.horizontalLayout_7.setStretch(1, 1)
         self.stackMain.addWidget(self.pageJog)
+        self.pageCLI = QWidget()
+        self.pageCLI.setObjectName(u"pageCLI")
+        self.verticalLayout_6 = QVBoxLayout(self.pageCLI)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.tbCLIOutput = QPlainTextEdit(self.pageCLI)
+        self.tbCLIOutput.setObjectName(u"tbCLIOutput")
+        self.tbCLIOutput.setReadOnly(True)
+
+        self.verticalLayout_6.addWidget(self.tbCLIOutput)
+
+        self.tbCLIInput = CLIInputTextEdit(self.pageCLI)
+        self.tbCLIInput.setObjectName(u"tbCLIInput")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.tbCLIInput.sizePolicy().hasHeightForWidth())
+        self.tbCLIInput.setSizePolicy(sizePolicy2)
+        self.tbCLIInput.setMinimumSize(QSize(0, 40))
+        self.tbCLIInput.setMaximumSize(QSize(16777215, 40))
+
+        self.verticalLayout_6.addWidget(self.tbCLIInput)
+
+        self.stackMain.addWidget(self.pageCLI)
 
         self.verticalLayout_3.addWidget(self.stackMain)
 
@@ -397,11 +427,11 @@ class ViewMain(object):
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.lbX = QLabel(ViewMain)
         self.lbX.setObjectName(u"lbX")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.lbX.sizePolicy().hasHeightForWidth())
-        self.lbX.setSizePolicy(sizePolicy2)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.lbX.sizePolicy().hasHeightForWidth())
+        self.lbX.setSizePolicy(sizePolicy3)
         self.lbX.setMinimumSize(QSize(100, 0))
         self.lbX.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
@@ -409,8 +439,8 @@ class ViewMain(object):
 
         self.lbY = QLabel(ViewMain)
         self.lbY.setObjectName(u"lbY")
-        sizePolicy2.setHeightForWidth(self.lbY.sizePolicy().hasHeightForWidth())
-        self.lbY.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.lbY.sizePolicy().hasHeightForWidth())
+        self.lbY.setSizePolicy(sizePolicy3)
         self.lbY.setMinimumSize(QSize(100, 0))
         self.lbY.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
@@ -418,8 +448,8 @@ class ViewMain(object):
 
         self.lbZ = QLabel(ViewMain)
         self.lbZ.setObjectName(u"lbZ")
-        sizePolicy2.setHeightForWidth(self.lbZ.sizePolicy().hasHeightForWidth())
-        self.lbZ.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.lbZ.sizePolicy().hasHeightForWidth())
+        self.lbZ.setSizePolicy(sizePolicy3)
         self.lbZ.setMinimumSize(QSize(100, 0))
         self.lbZ.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
@@ -427,8 +457,8 @@ class ViewMain(object):
 
         self.lbF = QLabel(ViewMain)
         self.lbF.setObjectName(u"lbF")
-        sizePolicy2.setHeightForWidth(self.lbF.sizePolicy().hasHeightForWidth())
-        self.lbF.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.lbF.sizePolicy().hasHeightForWidth())
+        self.lbF.setSizePolicy(sizePolicy3)
         self.lbF.setMinimumSize(QSize(100, 0))
         self.lbF.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
@@ -436,8 +466,8 @@ class ViewMain(object):
 
         self.lbS = QLabel(ViewMain)
         self.lbS.setObjectName(u"lbS")
-        sizePolicy2.setHeightForWidth(self.lbS.sizePolicy().hasHeightForWidth())
-        self.lbS.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.lbS.sizePolicy().hasHeightForWidth())
+        self.lbS.setSizePolicy(sizePolicy3)
         self.lbS.setMinimumSize(QSize(100, 0))
         self.lbS.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
@@ -496,6 +526,7 @@ class ViewMain(object):
         self.btZoomIn.pressed.connect(ViewMain.zoomIn)
         self.btZoomOut.pressed.connect(ViewMain.zoomOut)
         self.btZoomToFit.pressed.connect(ViewMain.zoomToFit)
+        self.btPageCLI.pressed.connect(ViewMain.switchPage)
 
         self.stackMain.setCurrentIndex(0)
 
@@ -509,6 +540,7 @@ class ViewMain(object):
         self.btPageConnect.setProperty("1", QCoreApplication.translate("ViewMain", u"1", None))
         self.btPageNC.setText(QCoreApplication.translate("ViewMain", u"NC", None))
         self.btPageJog.setText(QCoreApplication.translate("ViewMain", u"Jog", None))
+        self.btPageCLI.setText(QCoreApplication.translate("ViewMain", u"CLI", None))
         self.btConnect.setText(QCoreApplication.translate("ViewMain", u"Connect", None))
         self.btOpen.setText(QCoreApplication.translate("ViewMain", u"Open", None))
         self.btStart.setText(QCoreApplication.translate("ViewMain", u"Start", None))
