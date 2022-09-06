@@ -80,7 +80,7 @@ class WinMain(QWidget):
 		self.jogFeed: int = DEFAULT_FEED
 		self.incDist: float = DEFAULT_INCDIST
 
-		self.gcode: str
+		self.gcode: str = ""
 
 		self.fillDevices()
 
@@ -94,17 +94,22 @@ class WinMain(QWidget):
 	def grblStreamStatusChanged(self, stream: bool) -> None:
 		if stream:
 			self.viewMain.pageJog.setEnabled(False)
-			self.viewMain.btStart.setEnabled(False)
+
 			self.viewMain.btOpen.setEnabled(False)
-			self.viewMain.btUnlock.setEnabled(False)
+			self.viewMain.btStart.setText("Pause")
+			self.viewMain.btUnlock.setText("Abort")
+
 			self.viewMain.tbCLIInput.setEnabled(False)
 		else:
 			if self.grbl.connected:
 				self.viewMain.pageJog.setEnabled(True)
-				self.viewMain.btStart.setEnabled(True)
-				self.viewMain.btUnlock.setEnabled(True)
+
 				self.viewMain.tbCLIInput.setEnabled(True)
+
 			self.viewMain.btOpen.setEnabled(True)
+			self.viewMain.btStart.setText("Start")
+			self.viewMain.btUnlock.setText("Unlock")
+
 			self.viewMain.listGcode.setCurrentRow(0)
 			self.viewMain.listGcode.setCurrentRow(-1)
 
@@ -122,7 +127,8 @@ class WinMain(QWidget):
 			self.viewMain.cbPorts.setEnabled(False)
 			self.viewMain.btConnect.setText("Disconnect")
 			self.viewMain.lbConnected.setText("Connected")
-			self.viewMain.btStart.setEnabled(True)
+			if len(self.gcode) > 0:
+				self.viewMain.btStart.setEnabled(True)
 			self.viewMain.btUnlock.setEnabled(True)
 			self.viewMain.tbCLIInput.setEnabled(True)
 
@@ -147,7 +153,8 @@ class WinMain(QWidget):
 		else:
 			if not self.grbl.stream:
 				self.viewMain.pageJog.setEnabled(True)
-				self.viewMain.btStart.setEnabled(True)
+				if len(self.gcode) > 0:
+					self.viewMain.btStart.setEnabled(True)
 
 	def connectPort(self) -> None:
 		if not self.grbl.connected:
@@ -290,12 +297,25 @@ class WinMain(QWidget):
 				self.viewMain.listGcode.clear()
 				self.viewMain.listGcode.addItems(self.gcode.splitlines())
 				self.viewMain.gcodeViewer.loadGcode(self.gcode)
+		if len(self.gcode) > 0:
+			self.viewMain.btStart.setEnabled(True)
 
 	def startNC(self) -> None:
-		self.grbl.startNC()
+		if not self.grbl.stream:
+			self.grbl.startNC()
+		else:
+			if self.grbl.state == "Hold:0":
+				self.grbl.sendCmd(b"~", False)
+				self.viewMain.btStart.setText("Pause")
+			else:
+				self.grbl.sendCmd(b"!", False)
+				self.viewMain.btStart.setText("Unpause")
 
 	def unlock(self) -> None:
-		self.grbl.unlock()
+		if not self.grbl.stream:
+			self.grbl.unlock()
+		else:
+			self.grbl.sendCmd(b"\x18", False)
 
 	def zoomIn(self) -> None:
 		self.viewMain.gcodeViewer.zoomIn()
@@ -314,7 +334,7 @@ class WinMain(QWidget):
 			if msg.startswith("$"):
 				num = msg[1:msg.index("=")]
 				msg += " (%s)" % (GRBL_CFG_NAMES[num])
-				
+
 			self.viewMain.tbCLIOutput.appendPlainText(msg)
 	
 	def grblMessageSent(self, msg: str) -> None:

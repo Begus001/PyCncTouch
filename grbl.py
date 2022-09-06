@@ -210,7 +210,7 @@ class GrblInterface(QObject):
 		self.serial.baudrate = 115200
 		try:
 			self.serial.open()
-			self.serial.write(b"\x18")
+			self.sendCmd(b"\x18", False)
 			self.serial.flush()
 			resp = self.serial.readline().strip().decode()
 			resp = self.serial.readline().strip().decode()
@@ -256,7 +256,7 @@ class GrblInterface(QObject):
 
 	def jogCancel(self) -> None:
 		if not self.connected: return
-		self.serial.write(b"\x85")
+		self.sendCmd(b"\x85", False)
 
 	def moveXNYP(self) -> None:
 		self.sendCmd(b"G91\n")
@@ -341,7 +341,8 @@ class GrblInterface(QObject):
 		self.bytesInBuf.append(len(cmd))
 		self.messageSent.emit(cmd.decode())
 
-	def sendCmd(self, cmd: bytes):
+	def sendCmd(self, cmd: bytes, waitOk: bool = True):
 		self.serial.write(cmd)
-		self.bytesInBuf.append(len(cmd))
-		self.messageSent.emit(cmd.decode())
+		if waitOk:
+			self.bytesInBuf.append(len(cmd))
+			self.messageSent.emit(cmd.decode())
