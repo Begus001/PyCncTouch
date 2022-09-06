@@ -320,8 +320,10 @@ class DiagOpen(QDialog):
 		for name in sorted(os.listdir(self.currentDir)):
 			if os.path.isdir(os.path.join(self.currentDir, name)):
 				item = QListWidgetItem(QIcon.fromTheme("folder"), name)
-			else:
+			elif name.endswith(".nc"):
 				item = QListWidgetItem(QIcon.fromTheme("document"), name)
+			else: continue
+			
 			item.setSizeHint(QSize(0, 60))
 			item.setFont(QFont(self.font().family(), 20))
 			self.viewOpen.listFiles.addItem(item)
